@@ -14,7 +14,7 @@ import com.f2prateek.rx.preferences2.RxSharedPreferences
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.vander.burner.BuildConfig
 import com.vander.burner.app.di.Permanent
-import com.vander.burner.app.di.PoaUrl
+import com.vander.burner.app.di.XDaiProvider
 import com.vander.burner.app.ui.DebugActivity
 import com.vander.scaffold.annotations.ActivityScope
 import com.vander.scaffold.annotations.ApplicationScope
@@ -28,6 +28,7 @@ import dagger.Provides
 import dagger.Reusable
 import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoSet
+import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 
@@ -76,13 +77,17 @@ object DebugAppModule {
     }
   }
 
-  @JvmStatic @Provides @Reusable @PoaUrl
-  fun providesPoaUrl(@Permanent prefs: RxSharedPreferences): Preference<String> =
-      prefs.getString("pref_url", "")
-
   @JvmStatic @Provides @ApplicationScope
   fun providesOkHttpBuilder(okHttp: OkHttpClient.Builder): OkHttpClient = okHttp
       .addNetworkInterceptor(StethoInterceptor())
       .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
       .build()
+
+  @JvmStatic @Provides @Reusable @XDaiProvider
+  fun providesXDaiProviderPref(@Permanent prefs: RxSharedPreferences): Preference<String> =
+      prefs.getString("pref_url_xdai", "http://localhost:8545")
+
+  @JvmStatic @Provides @Reusable @XDaiProvider
+  fun providesXDaiProviderUrl(@XDaiProvider pref: Preference<String>): HttpUrl = HttpUrl.get(pref.get())!!
+
 }

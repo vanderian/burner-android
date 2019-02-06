@@ -1,6 +1,7 @@
 package com.vander.burner.app
 
 import com.vander.burner.app.ui.MainActivity
+import com.vander.burner.app.ui.screen.UiModules
 import com.vander.scaffold.annotations.ActivityScope
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -17,6 +18,7 @@ object InjectorFactoriesModules {
   }
 
   @Module(includes = [
+    UiModules.ScreenModules::class
   ])
   abstract class ActivityModules
 }

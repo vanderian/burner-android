@@ -64,7 +64,7 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'com.github.vanderian:scaffold:2.1.0'
+    implementation 'com.github.vanderian:scaffold:2.1.1'
     implementation 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0'
     implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5'
     implementation "androidx.room:room-runtime:$room_version"
@@ -77,10 +77,11 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+
     implementation 'de.adorsys.android:securestoragelibrary:1.0.3'
     implementation 'com.airbnb.android:lottie:2.5.5'
-
     implementation 'com.google.android.gms:play-services-oss-licenses:16.0.2'
+    implementation 'org.web3j:core:4.1.0-android'
 
     kapt "androidx.room:room-compiler:$room_version"
     kapt 'androidx.lifecycle:lifecycle-compiler:2.0.0'
