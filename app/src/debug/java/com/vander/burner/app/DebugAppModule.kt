@@ -14,7 +14,7 @@ import com.f2prateek.rx.preferences2.RxSharedPreferences
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.vander.burner.BuildConfig
 import com.vander.burner.app.di.Permanent
-import com.vander.burner.app.di.XDaiProvider
+import com.vander.burner.app.di.Xdai
 import com.vander.burner.app.ui.DebugActivity
 import com.vander.scaffold.annotations.ActivityScope
 import com.vander.scaffold.annotations.ApplicationScope
@@ -83,11 +83,11 @@ object DebugAppModule {
       .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
       .build()
 
-  @JvmStatic @Provides @Reusable @XDaiProvider
+  @JvmStatic @Provides @Reusable @Xdai
   fun providesXDaiProviderPref(@Permanent prefs: RxSharedPreferences): Preference<String> =
       prefs.getString("pref_url_xdai", "http://localhost:8545")
 
-  @JvmStatic @Provides @Reusable @XDaiProvider
-  fun providesXDaiProviderUrl(@XDaiProvider pref: Preference<String>): HttpUrl = HttpUrl.get(pref.get())!!
+  @JvmStatic @Provides @Reusable @Xdai
+  fun providesXDaiProviderUrl(@Xdai pref: Preference<String>): HttpUrl = HttpUrl.get(pref.get())!!
 
 }

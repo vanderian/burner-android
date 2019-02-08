@@ -15,13 +15,13 @@ import at.favre.lib.hood.util.defaults.DefaultProperties
 import com.f2prateek.rx.preferences2.Preference
 import com.jakewharton.processphoenix.ProcessPhoenix
 import com.vander.burner.BuildConfig
-import com.vander.burner.app.di.XDaiProvider
+import com.vander.burner.app.di.Xdai
 import com.vander.scaffold.Injectable
 import javax.inject.Inject
 
 class DebugActivity : PopHoodActivity(), Injectable {
 
-  @Inject @field:XDaiProvider lateinit var poaUrl: Preference<String>
+  @Inject @field:Xdai lateinit var poaUrl: Preference<String>
   @Inject lateinit var prefs: SharedPreferences
 
   private val urls = listOf(
@@ -34,7 +34,7 @@ class DebugActivity : PopHoodActivity(), Injectable {
 
     firstPage.add(DefaultProperties.createSectionAppVersionInfoFromBuildConfig(BuildConfig::class.java))
 
-    firstPage.add(Hood.get().createSpinnerEntry(SingleSelectListConfigAction("XDai URL", object : SpinnerValue<List<SpinnerElement>, SpinnerElement> {
+    firstPage.add(Hood.get().createSpinnerEntry(SingleSelectListConfigAction("Xdai URL", object : SpinnerValue<List<SpinnerElement>, SpinnerElement> {
       override fun onChange(value: SpinnerElement) {
         if (poaUrl.get() != value.name) {
           poaUrl.set(value.name)

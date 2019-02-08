@@ -10,6 +10,8 @@ import com.vander.scaffold.BaseApp
 import com.vander.scaffold.BaseAppModule
 import dagger.Provides
 import de.adorsys.android.securestoragelibrary.SecurePreferences
+import pm.gnosis.crypto.LinuxSecureRandom
+import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -23,10 +25,16 @@ abstract class App : BaseApp() {
     super.onCreate()
     setupRx()
     clearKeyStoreOnInstall()
+
+    try {
+      LinuxSecureRandom()
+    } catch (e: Exception) {
+      Timber.e("Could not register LinuxSecureRandom. Using default SecureRandom.")
+    }
   }
 
   private fun clearKeyStoreOnInstall() {
-    with(prefs.getBoolean("first_run")) {
+    with(prefs.getBoolean("app.first_run")) {
       if (!isSet) {
         set(true)
         SecurePreferences.clearAllValues()

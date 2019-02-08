@@ -15,12 +15,18 @@ object UiModules {
     @ScreenScope @ContributesAndroidInjector()
     abstract fun contributeBalanceScreen(): BalanceScreen
 
+    @ScreenScope @ContributesAndroidInjector()
+    abstract fun contributeInitScreen(): InitScreen
+
   }
 
   @Module
   abstract class ViewModelModules {
     @Binds @IntoMap @ViewModelKey(BalanceModel::class)
     abstract fun provideBalanceModel(viewModel: BalanceModel): ViewModel
+
+    @Binds @IntoMap @ViewModelKey(InitModel::class)
+    abstract fun provideInitModel(viewModel: InitModel): ViewModel
 
   }
 }

@@ -10,6 +10,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="64dp"
+        android:layout_marginBottom="48dp"
         >
 
         <TextView
@@ -18,15 +20,27 @@
             android:layout_height="64dp"
             android:layout_margin="16dp"
             android:gravity="center"
+            android:lines="1"
             android:textAppearance="?attr/textAppearanceHeadline3"
             app:autoSizeMaxTextSize="48sp"
-            app:autoSizeMinTextSize="20sp"
+            app:autoSizeMinTextSize="12sp"
             app:autoSizeStepGranularity="2sp"
             app:autoSizeTextType="uniform"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="1,383 $"
+            tools:text="10000000,123456789123456789 $"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonBurn"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/action_burn"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

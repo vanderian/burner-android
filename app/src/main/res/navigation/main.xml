@@ -3,12 +3,40 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_graph"
-    app:startDestination="@id/balanceScreen"
+    app:startDestination="@id/initScreen"
     >
 
     <fragment
         android:id="@+id/balanceScreen"
         android:name="com.vander.burner.app.ui.screen.BalanceScreen"
         android:label="BalanceScreen"
-        />
+        >
+        <action
+            android:id="@+id/action_balanceScreen_to_initScreen"
+            app:destination="@id/initScreen"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@+id/main_graph"
+            app:popUpToInclusive="false"
+            />
+    </fragment>
+
+    <fragment
+        android:id="@+id/initScreen"
+        android:name="com.vander.burner.app.ui.screen.InitScreen"
+        android:label="InitScreen"
+        >
+        <action
+            android:id="@+id/action_initScreen_to_balanceScreen"
+            app:destination="@id/balanceScreen"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@+id/initScreen"
+            app:popUpToInclusive="true"
+            />
+    </fragment>
 </navigation>
