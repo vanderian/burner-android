@@ -14,7 +14,7 @@
         android:layout_marginEnd="@dimen/side_margin"
         >
 
-        <pm.gnosis.blockies.BlockiesImageView
+        <com.vander.burner.app.ui.misc.BlockiesImageView
             android:id="@+id/imageBlockie"
             android:layout_width="@dimen/blockie_size"
             android:layout_height="@dimen/blockie_size"
