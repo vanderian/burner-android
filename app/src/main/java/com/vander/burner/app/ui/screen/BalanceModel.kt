@@ -15,7 +15,7 @@ import javax.inject.Inject
 class BalanceModel @Inject constructor(
     private val xdaiProvider: XdaiProvider,
     private val accountRepository: AccountRepository
-) : ScreenModel<BalanceState, BalanceIntents>(BalanceState()) {
+) : ScreenModel<BalanceState, BalanceIntents>(BalanceState(accountRepository.address)) {
 
   override fun collectIntents(intents: BalanceIntents, result: Observable<Result>): Disposable {
 

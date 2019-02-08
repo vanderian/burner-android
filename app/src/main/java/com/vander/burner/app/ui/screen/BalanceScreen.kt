@@ -5,6 +5,8 @@ import com.vander.burner.R
 import com.vander.scaffold.screen.Screen
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.screen_balance.*
+import pm.gnosis.utils.asEthereumAddressString
+import pm.gnosis.utils.removeHexPrefix
 import java.text.NumberFormat
 import java.util.*
 
@@ -17,5 +19,7 @@ class BalanceScreen : Screen<BalanceState, BalanceIntents>() {
 
   override fun render(state: BalanceState) {
     textBalance.text = NumberFormat.getCurrencyInstance(Locale.US).format(state.balance)
+    imageBlockie.setAddress(state.address)
+    textAddressShort.text = state.address.asEthereumAddressString().removeHexPrefix().take(6)
   }
 }
