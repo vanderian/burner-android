@@ -18,6 +18,9 @@ object UiModules {
     @ScreenScope @ContributesAndroidInjector()
     abstract fun contributeInitScreen(): InitScreen
 
+    @ScreenScope @ContributesAndroidInjector()
+    abstract fun contributeReceiveScreen(): ReceiveScreen
+
   }
 
   @Module
@@ -27,6 +30,9 @@ object UiModules {
 
     @Binds @IntoMap @ViewModelKey(InitModel::class)
     abstract fun provideInitModel(viewModel: InitModel): ViewModel
+
+    @Binds @IntoMap @ViewModelKey(ReceiveModel::class)
+    abstract fun provideReceiveModel(viewModel: ReceiveModel): ViewModel
 
   }
 }

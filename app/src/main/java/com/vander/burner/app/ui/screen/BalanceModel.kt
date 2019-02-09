@@ -25,12 +25,16 @@ class BalanceModel @Inject constructor(
               .doOnComplete { event.onNext(BalanceScreenDirections.actionBalanceScreenToInitScreen().event()) }
         }
 
+    val receive = intents.receive()
+        .doOnNext { event.onNext(BalanceScreenDirections.actionBalanceScreenToReceiveScreen().event()) }
+
     val balance = Observable.interval(3, TimeUnit.SECONDS)
         .flatMapSingle { xdaiProvider.balance.doOnSuccess { state.next { copy(balance = it) } } }
 
     return CompositeDisposable().with(
         balance.subscribe(),
-        burn.subscribe()
+        burn.subscribe(),
+        receive.subscribe()
     )
   }
 }

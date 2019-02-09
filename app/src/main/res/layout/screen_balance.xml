@@ -19,6 +19,7 @@
             android:layout_width="@dimen/blockie_size"
             android:layout_height="@dimen/blockie_size"
             android:layout_marginTop="24dp"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             />
 
@@ -27,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:textAppearance="?attr/textAppearanceSubtitle1"
+            android:textAppearance="?attr/textAppearanceHeadline6"
             app:layout_constraintBottom_toBottomOf="@+id/imageBlockie"
             app:layout_constraintLeft_toRightOf="@+id/imageBlockie"
             app:layout_constraintTop_toTopOf="@+id/imageBlockie"
@@ -41,7 +42,7 @@
             android:layout_marginTop="48dp"
             android:gravity="center"
             android:lines="1"
-            android:textAppearance="?attr/textAppearanceHeadline3"
+            android:textAppearance="?attr/textAppearanceHeadline1"
             app:autoSizeMaxTextSize="48sp"
             app:autoSizeMinTextSize="12sp"
             app:autoSizeStepGranularity="2sp"
@@ -54,12 +55,26 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonBurn"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            style="@style/Widget.MaterialComponents.Button.Icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="48dp"
             android:text="@string/action_burn"
+            app:icon="@drawable/ic_fire_black_24dp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonReceive"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="@string/action_receive"
+            app:icon="@drawable/ic_qrcode_black_24dp"
+            app:layout_constraintBottom_toTopOf="@+id/buttonBurn"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             />

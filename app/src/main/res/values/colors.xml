@@ -3,4 +3,5 @@
     <color name="colorPrimary">@color/orange_700</color>
     <color name="colorPrimaryDark">#b53d00</color>
     <color name="colorPrimaryLight">#ff9d3f</color>
+    <color name="colorStatusDark">@color/brown_900</color>
 </resources>

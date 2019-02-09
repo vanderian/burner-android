@@ -15,6 +15,7 @@ class BalanceScreen : Screen<BalanceState, BalanceIntents>() {
 
   override fun intents(): BalanceIntents = object : BalanceIntents {
     override fun burn(): Observable<Unit> = buttonBurn.clicks()
+    override fun receive(): Observable<Unit> = buttonReceive.clicks()
   }
 
   override fun render(state: BalanceState) {
