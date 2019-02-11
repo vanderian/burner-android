@@ -1,6 +1,27 @@
 <resources>
     <string name="action_burn">Burn</string>
     <string name="action_receive">Receive</string>
+    <string name="action_send">Send</string>
+    <string name="action_try_again">Try again</string>
 
     <string name="title_receive">Receive</string>
+    <string name="title_send">Send</string>
+
+    <string name="label_to">To Address</string>
+    <string name="label_amount">Send Amount</string>
+    <string name="label_message">Message</string>
+
+    <string name="hint_address">0x… or *.eth</string>
+    <string name="hint_amount">$0.00</string>
+    <string name="hint_message">optional unencrypted message</string>
+
+    <string name="error_form_address">Please enter a valid address or ENS</string>
+    <string name="error_form_empty">This field cannot be empty</string>
+    <string name="error_form_amount">Amount must be greater then 0</string>
+
+    <string name="error_net_no_host">Server unreachable, check your internet connection</string>
+    <string name="error_net_default">Sorry, some network error occurred</string>
+
+    <string name="dialog_error_title">Network Error</string>
+    <string name="label_loading">Loading…</string>
 </resources>

@@ -6,7 +6,7 @@ apply plugin: 'net.ltgt.errorprone'
 // discover dependency current versions ./gradlew dependencyUpdates -Drevision=release
 apply plugin: 'com.gladed.androidgitversion'
 apply plugin: 'de.mobilej.unmock'
-apply plugin: 'androidx.navigation.safeargs'
+apply plugin: 'androidx.navigation.safeargs.kotlin'
 apply plugin: 'com.google.android.gms.oss-licenses-plugin'
 
 apply from: rootProject.file("gradle/compile.gradle")
@@ -59,12 +59,19 @@ kapt {
     correctErrorTypes = true
 }
 
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
+
 dependencies {
+    compile ('org.web3j:core:4.1.0-android')
+
+
     implementation "androidx.multidex:multidex:2.0.1"
     implementation "androidx.cardview:cardview:1.0.0"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$versions.kotlin"
-    implementation "com.github.vanderian:scaffold:2.1.1"
+    implementation "com.github.vanderian:scaffold:feature~burner-SNAPSHOT"
     implementation "com.f2prateek.rx.preferences2:rx-preferences:2.0.0"
     implementation "com.tbruyelle.rxpermissions2:rxpermissions:0.9.5"
     implementation "androidx.room:room-runtime:$versions.androidx_room"

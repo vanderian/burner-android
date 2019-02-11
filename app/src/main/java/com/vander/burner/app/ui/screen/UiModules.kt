@@ -21,6 +21,12 @@ object UiModules {
     @ScreenScope @ContributesAndroidInjector()
     abstract fun contributeReceiveScreen(): ReceiveScreen
 
+    @ScreenScope @ContributesAndroidInjector()
+    abstract fun contributeSendScreen(): SendScreen
+
+    @ScreenScope @ContributesAndroidInjector()
+    abstract fun contributeScanScreen(): ScanScreen
+
   }
 
   @Module
@@ -33,6 +39,12 @@ object UiModules {
 
     @Binds @IntoMap @ViewModelKey(ReceiveModel::class)
     abstract fun provideReceiveModel(viewModel: ReceiveModel): ViewModel
+
+    @Binds @IntoMap @ViewModelKey(SendModel::class)
+    abstract fun provideSendModel(viewModel: SendModel): ViewModel
+
+    @Binds @IntoMap @ViewModelKey(ScanModel::class)
+    abstract fun provideScanModel(viewModel: ScanModel): ViewModel
 
   }
 }

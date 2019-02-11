@@ -18,6 +18,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 @Module
 object NetModule {
+  const val RETRY_COUNT = 2
 
   @JvmStatic @Provides @ApplicationScope
   fun providesMoshi(): Moshi {
