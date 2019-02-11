@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar
 import com.jakewharton.rxbinding3.view.clicks
 import com.vander.burner.R
 import com.vander.burner.app.ui.animatedClose
+import com.vander.burner.app.ui.copyToClipboard
 import com.vander.scaffold.screen.Screen
 import com.vander.scaffold.ui.visible
 import io.reactivex.Observable
@@ -32,6 +33,7 @@ class ReceiveScreen : Screen<ReceiveState, ReceiveIntents>() {
       get() = this@ReceiveScreen.toolbar
 
     override fun copy(): Observable<Unit> = buttonAddress.clicks()
+        .doOnNext { requireContext().copyToClipboard("public key", buttonAddress.text.toString()) }
   }
 
   override fun render(state: ReceiveState) {

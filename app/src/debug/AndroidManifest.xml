@@ -10,6 +10,7 @@
 
     <application
         android:name=".app.DebugApp"
+        android:networkSecurityConfig="@xml/network_security_config"
         tools:replace="name"
         >
 

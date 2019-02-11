@@ -1,7 +1,10 @@
 package com.vander.burner.app.ui
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.os.Parcelable
+import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
@@ -12,6 +15,7 @@ import io.reactivex.Maybe
 import io.reactivex.Observable
 import kotlinx.android.parcel.Parcelize
 import me.dm7.barcodescanner.zxing.ZXingScannerView
+import pm.gnosis.svalinn.common.utils.toast
 
 fun Toolbar.animatedClose() = AnimatedVectorDrawableCompat.create(context, R.drawable.avd_close)?.run {
   navigationIcon = this
@@ -57,6 +61,12 @@ fun Context.showConfirmDialog(data: ShowDialogEvent): Maybe<Unit> =
         dialog.show()
       }
     }
+
+fun Context.copyToClipboard(label: CharSequence, text: CharSequence): Boolean =
+    (getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager)?.let {
+      it.primaryClip = ClipData.newPlainText(label, text)
+      toast(R.string.label_copy_address, Toast.LENGTH_SHORT)
+    } != null
 
 @Parcelize
 data class ShowDialogEvent(

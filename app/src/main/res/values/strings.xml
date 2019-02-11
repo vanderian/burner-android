@@ -10,6 +10,8 @@
     <string name="label_to">To Address</string>
     <string name="label_amount">Send Amount</string>
     <string name="label_message">Message</string>
+    <string name="label_loading">Loading…</string>
+    <string name="label_copy_address">Address copied to clipboard</string>
 
     <string name="hint_address">0x… or *.eth</string>
     <string name="hint_amount">$0.00</string>
@@ -23,5 +25,4 @@
     <string name="error_net_default">Sorry, some network error occurred</string>
 
     <string name="dialog_error_title">Network Error</string>
-    <string name="label_loading">Loading…</string>
 </resources>
