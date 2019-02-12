@@ -18,6 +18,7 @@ import timber.log.Timber
 import java.net.UnknownHostException
 import java.util.concurrent.atomic.AtomicInteger
 
+// general handling
 
 private val codes = mapOf(
     400 to "error_bad_request",
@@ -38,10 +39,12 @@ private val codes = mapOf(
 )
 
 const val ERROR_NO_INTERNET = "error_no_internet"
+const val ERROR_ETH = "error_eth"
 
 fun parseError(throwable: Throwable): ErrorModel =
     when (throwable) {
       is UnknownHostException -> ErrorModel(ERROR_NO_INTERNET, throwable.message.orEmpty(), resId = R.string.error_net_no_host)
+      is RequestFailedException -> ErrorModel(ERROR_ETH, throwable.message.orEmpty(), R.string.error_net_eth, arrayOf(throwable.message.orEmpty()))
       else -> ErrorModel("error_default", throwable.message.orEmpty(), resId = R.string.error_net_default)
     }
 
@@ -61,6 +64,8 @@ fun ErrorModel.getString(ctx: Context): String =
     (resId ?: 0)
         .let { if (it == 0) ctx.getString(R.string.error_net_default) else ctx.getString(it, *args) }
         .also { Timber.d("Error message: $it: $message") }
+
+// api calls
 
 fun Screen<*, *>.showRetryDialog(errorModel: ErrorModel): Maybe<Unit> =
     requireContext().showConfirmDialog(

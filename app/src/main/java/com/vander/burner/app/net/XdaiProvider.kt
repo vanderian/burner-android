@@ -3,56 +3,57 @@ package com.vander.burner.app.net
 import com.vander.burner.app.data.AccountRepository
 import com.vander.burner.app.di.Xdai
 import com.vander.scaffold.annotations.ApplicationScope
+import io.reactivex.Observable
 import io.reactivex.Single
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.ECKeyPair
 import org.web3j.crypto.RawTransaction
 import org.web3j.crypto.TransactionEncoder
-import pm.gnosis.ethereum.EthGetTransactionCount
 import pm.gnosis.ethereum.EthereumRepository
+import pm.gnosis.ethereum.models.TransactionParameters
+import pm.gnosis.models.Transaction
 import pm.gnosis.models.Wei
-import pm.gnosis.utils.addHexPrefix
-import pm.gnosis.utils.asEthereumAddressString
-import pm.gnosis.utils.toHex
-import pm.gnosis.utils.toHexString
+import pm.gnosis.utils.*
 import java.math.BigDecimal
 import java.math.BigInteger
 import javax.inject.Inject
 
-// todo replace eth repo with custom rpc, cannot add new requests, missing error code in failure
+// todo missing error code in failure
 @ApplicationScope
 class XdaiProvider @Inject constructor(
     @Xdai private val xdai: EthereumRepository,
     private val accountRepository: AccountRepository
 ) {
 
-  private val nonce: Single<BigInteger>
-    get() = xdai.request(EthGetTransactionCount(accountRepository.address))
-        .map { it.checkedResult() }
-        .singleOrError()
+  private fun trx(to: String, amount: String, msg: String?): Transaction {
+    val message = msg.let { if (it.isNullOrBlank()) "0x" else it.toByteArray().toHex().addHexPrefix() }
+    return Transaction(to.asEthereumAddress()!!, Wei.ether(amount), data = message)
+  }
 
-  val balance: Single<BigDecimal>
+  private fun gasPrice(tp: TransactionParameters) = if (tp.gasPrice == 0.toBigInteger()) gasPrice else tp.gasPrice
+
+  val balance: Single<Wei>
     get() = xdai.getBalance(accountRepository.address)
-        .map { it.toEther() }
         .singleOrError()
 
-  fun createTrx(to: String, amount: String, msg: String?) =
-      nonce.map {
-        val message = msg.let { if (it.isNullOrBlank()) "0x" else it.toByteArray().toHex().addHexPrefix() }
-        RawTransaction.createTransaction(it, gasPrice, gas, to.asEthereumAddressString(), Wei.ether(amount).value, message)
+  fun createTrx(to: String, amount: String, msg: String?): Single<Transaction> =
+      trx(to, amount, msg).let { trx ->
+        xdai.getTransactionParameters(accountRepository.address, trx.address, trx.value, trx.data)
+            .map { trx.copy(nonce = it.nonce, gasPrice = gasPrice(it), gas = it.gas) }
+            .singleOrError()
       }
 
-  fun transfer(trx: RawTransaction) =
-      TransactionEncoder.signMessage(trx, Credentials.create(ECKeyPair.create(accountRepository.keyPair.privKey))).let {
-        xdai.sendRawTransaction(it.toHexString().addHexPrefix()).singleOrError()
-      }
+  fun transfer(trx: Transaction): Single<String> {
+    val raw = RawTransaction.createTransaction(trx.nonce, trx.gasPrice, trx.gas, trx.address.asEthereumAddressString(), trx.value?.value, trx.data)
+    val signed = TransactionEncoder.signMessage(raw, Credentials.create(ECKeyPair.create(accountRepository.keyPair.privKey)))
+    return xdai.sendRawTransaction(signed.toHexString().addHexPrefix()).singleOrError()
+  }
 
   fun receipt(hash: String) = xdai.getTransactionReceipt(hash).singleOrError()
 
-  fun trx(hash: String) = xdai.getTransactionByHash(hash).singleOrError()
+  fun transaction(hash: String) = xdai.getTransactionByHash(hash).singleOrError()
 
   companion object {
-    val gas = 120000L.toBigInteger()
     val gasPrice: BigInteger = BigDecimal(1.1).movePointRight(9).toBigInteger()
   }
 }

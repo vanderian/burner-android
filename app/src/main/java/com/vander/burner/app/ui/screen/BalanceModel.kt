@@ -36,7 +36,7 @@ class BalanceModel @Inject constructor(
         .doOnNext { event.onNext(BalanceScreenDirections.actionBalanceScreenToScanScreen().event()) }
 
     val balance = Observable.interval(3, TimeUnit.SECONDS).startWith(0)
-        .flatMapMaybe { xdaiProvider.balance.doOnSuccess { state.next { copy(balance = it) } }.safeApiCall(event) }
+        .flatMapMaybe { xdaiProvider.balance.doOnSuccess { state.next { copy(balance = it.toEther()) } }.safeApiCall(event) }
 
     return CompositeDisposable().with(
         balance.subscribe(),

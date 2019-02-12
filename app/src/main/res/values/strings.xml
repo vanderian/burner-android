@@ -29,8 +29,10 @@
     <string name="error_form_address">Please enter a valid address or ENS</string>
     <string name="error_form_empty">This field cannot be empty</string>
     <string name="error_form_amount">Amount must be greater then 0</string>
+    <string name="error_form_max_balance">Insufficient funds</string>
 
     <string name="error_net_no_host">Server unreachable, check your internet connection</string>
+    <string name="error_net_eth">Ethereum network error: %1$s</string>
     <string name="error_net_default">Sorry, some network error occurred</string>
 
     <string name="error_app_qr">Unresolvable QR code: %1$s</string>

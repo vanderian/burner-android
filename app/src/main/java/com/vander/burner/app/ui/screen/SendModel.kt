@@ -7,8 +7,10 @@ import com.vander.burner.app.net.safeApiCall
 import com.vander.burner.app.validator.AddressRule
 import com.vander.burner.app.validator.GreaterThenZeroRule
 import com.vander.burner.app.validator.NotEmptyRule
+import com.vander.scaffold.debug.log
 import com.vander.scaffold.event
 import com.vander.scaffold.form.Form
+import com.vander.scaffold.form.validator.ValidateRule
 import com.vander.scaffold.form.validator.Validation
 import com.vander.scaffold.screen.PopStack
 import com.vander.scaffold.screen.PopStackTo
@@ -32,11 +34,19 @@ class SendModel @Inject constructor(
       Validation(R.id.inputAmount, NotEmptyRule, GreaterThenZeroRule) //max balance rule
   )
 
+  private fun maxBalanceRule(balance: Wei) = object : ValidateRule() {
+    override fun validate(text: String): Boolean = Wei.ether(text) <= balance
+
+    override val errorRes: Int
+      get() = R.string.error_form_max_balance
+  }
+
   override fun collectIntents(intents: SendIntents, result: Observable<Result>): Disposable {
     val fromScan = SendScreenArgs.fromBundle(args).transferData != null
 
     val submit = intents.send()
-        .filter { form.validate(event) }
+        .flatMapMaybe { xdaiProvider.balance.safeApiCall(event) }
+        .filter { form.validate(event, Validation(R.id.inputAmount, maxBalanceRule(it))) }
         .flatMapMaybe {
           xdaiProvider.createTrx(
               form.inputText(R.id.inputAddress),
@@ -49,7 +59,7 @@ class SendModel @Inject constructor(
         .flatMapMaybe { (trx, hash) -> xdaiProvider.receipt(hash).safeApiCall(event).map { trx to it } }
         .observeOn(AndroidSchedulers.mainThread())
         .flatMapMaybe { (t, r) ->
-          intents.receipt(r, Wei(t.value).toEther(), fromScan)
+          intents.receipt(r, t.value!!.toEther(), fromScan)
               .doOnSuccess { event.onNext(PopStackTo(R.id.balanceScreen, false)) }
               .doOnComplete { event.onNext(PopStack) }
         }
