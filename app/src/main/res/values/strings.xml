@@ -5,6 +5,7 @@
     <string name="action_try_again">Try again</string>
     <string name="action_close">Close</string>
     <string name="action_scan_next">Scan next</string>
+    <string name="action_set_values">Set request values</string>
 
     <string name="title_receive">Receive</string>
     <string name="title_send">Send</string>
@@ -12,13 +13,17 @@
 
     <string name="label_to">To Address</string>
     <string name="label_amount">Send Amount</string>
+    <string name="label_amount_request">Request Amount</string>
     <string name="label_message">Message</string>
+    <string name="label_message_request">Message or Item</string>
     <string name="label_loading">Loading…</string>
     <string name="label_copy_address">Address copied to clipboard</string>
+    <string name="label_copy_link">Request link copied to clipboard</string>
 
     <string name="hint_address">0x… or *.eth</string>
     <string name="hint_amount">$0.00</string>
     <string name="hint_message">optional unencrypted message</string>
+    <string name="hint_message_request">Hot Dogs</string>
 
     <string name="error_form_address_own">Cannot send to own address</string>
     <string name="error_form_address">Please enter a valid address or ENS</string>

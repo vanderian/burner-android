@@ -15,7 +15,7 @@ import java.math.BigDecimal
 
 @Parcelize
 data class TransferData(
-    val to: String,
+    val address: String,
     val amount: String = "",
     val message: String = ""
 ) : Parcelable
@@ -35,13 +35,15 @@ interface BalanceIntents : Screen.Intents {
 }
 
 data class ReceiveState(
-    val address: Solidity.Address,
-    val qr: Bitmap? = null
+    val qrString: String,
+    val qr: Bitmap? = null,
+    val showValues: Boolean = false
 ) : Screen.State
 
-interface ReceiveIntents : NavigationIntent {
+interface ReceiveIntents : NavigationIntent, FormIntents {
   val size: Int
   fun copy(): Observable<Unit>
+  fun toggle(): Observable<Unit>
 }
 
 class SendState() : Screen.State

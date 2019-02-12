@@ -27,7 +27,7 @@ class ScanModel @Inject constructor(
               scan.filter { Uri.parse(it).host != null }
                   .map { it.substringAfterLast("/").split(";") }
                   .filter { it[0].asEthereumAddress() != null }
-                  .map { TransferData(it[0], it.getOrElse(1) { "" }, it.getOrElse(2) { "" }) }
+                  .map { TransferData(it[0], it.getOrElse(1) { "" }, Uri.decode(it.getOrElse(2) { "" })) }
                   .doAfterNext { event.onNext(ScanScreenDirections.actionScanScreenToSendScreen(it).event()) },
               scan.delaySubscription(300, TimeUnit.MILLISECONDS)
                   .doAfterNext { event.onNext(UnknownQrCode(it)) }

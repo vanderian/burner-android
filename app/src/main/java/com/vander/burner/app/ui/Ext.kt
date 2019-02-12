@@ -64,10 +64,10 @@ fun Context.showConfirmDialog(data: ShowDialogEvent): Maybe<Unit> =
       }
     }
 
-fun Context.copyToClipboard(label: CharSequence, text: CharSequence): Boolean =
+fun Context.copyToClipboard(label: CharSequence, text: CharSequence, @StringRes toast: Int): Boolean =
     (getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager)?.let {
       it.primaryClip = ClipData.newPlainText(label, text)
-      toast(R.string.label_copy_address, Toast.LENGTH_SHORT)
+      toast(toast, Toast.LENGTH_SHORT)
     } != null
 
 @Parcelize

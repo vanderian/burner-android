@@ -9,42 +9,153 @@
 
     <include layout="@layout/layout_appbar" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:animateLayoutChanges="true"
+        android:clipToPadding="false"
+        android:paddingBottom="24dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         >
 
-        <ImageView
-            android:id="@+id/imageQr"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_margin="36dp"
-            android:background="@color/white"
-            android:padding="8dp"
-            android:visibility="invisible"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonAddress"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?attr/textAppearanceCaption"
-            android:textColor="?android:textColorSecondary"
-            app:icon="@drawable/ic_content_copy_black_24dp"
-            app:iconTint="?android:textColorSecondary"
-            android:layout_marginTop="36dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageQr"
-            tools:text="asdasdadadadadadasaddasda"
-            />
+            android:layout_marginStart="@dimen/side_margin"
+            android:layout_marginEnd="@dimen/side_margin"
+            android:animateLayoutChanges="true"
+            >
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageView
+                android:id="@+id/imageQr"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="16dp"
+                android:background="@color/white"
+                android:padding="8dp"
+                android:visibility="invisible"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/buttonAddress"
+                />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonAddress"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textAppearance="?attr/textAppearanceCaption"
+                android:textColor="?android:textColorSecondary"
+                android:textSize="10sp"
+                app:icon="@drawable/ic_content_copy_black_24dp"
+                app:iconTint="?android:textColorSecondary"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="asdasdadadadadadasaddasda"
+                />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonValues"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="@string/action_set_values"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageQr"
+                />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/groupInputs"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:visibility="gone"
+                app:constraint_referenced_ids="_label_a, _label_m, inputAmount, inputMessage, textUrl"
+                />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/groupButtons"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:constraint_referenced_ids="buttonValues, buttonAddress"
+                />
+
+            <TextView
+                android:id="@+id/_label_a"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_amount_request"
+                android:textAppearance="?attr/textAppearanceOverline"
+                app:layout_constraintBottom_toTopOf="@+id/inputAmount"
+                app:layout_constraintStart_toStartOf="@+id/inputAmount"
+                />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/inputAmount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:hint="@string/hint_amount"
+                app:layout_constraintTop_toBottomOf="@+id/imageQr"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:inputType="numberDecimal"
+                    android:lines="1"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/_label_m"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:text="@string/label_message_request"
+                android:textAppearance="?attr/textAppearanceOverline"
+                app:layout_constraintBottom_toTopOf="@+id/inputMessage"
+                app:layout_constraintStart_toStartOf="@+id/inputMessage"
+                />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/inputMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                app:hintEnabled="false"
+                app:layout_constraintTop_toBottomOf="@+id/inputAmount"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_message_request"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:lines="1"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/textUrl"
+                style="@style/TextAppearance.MaterialComponents.Caption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:background="?android:selectableItemBackground"
+                android:textAppearance="?attr/textAppearanceCaption"
+                android:textColor="@color/textSecondaryDisabled"
+                app:layout_constraintTop_toBottomOf="@+id/inputMessage"
+                tools:text="https://xdai.io/0x0885e481415d2342d5c5d6a38bae89316da27f00;123;hello%20hot%20dog"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

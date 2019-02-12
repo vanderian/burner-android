@@ -42,8 +42,10 @@ android {
     buildTypes {
         debug {
             applicationIdSuffix ".debug"
+            buildConfigField "String", "CLIENT_URL", '"http://localhost:3000/"'
         }
         release {
+            buildConfigField "String", "CLIENT_URL", '"https://xdai.io/"'
 //            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             if (isCI()) {
