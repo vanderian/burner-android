@@ -22,7 +22,7 @@ class BalanceModel @Inject constructor(
 
     val burn = intents.burn()
         .flatMapCompletable {
-          accountRepository.burn()
+          xdaiProvider.burn().andThen(accountRepository.burn()).safeApiCall(event)
               .doOnComplete { event.onNext(BalanceScreenDirections.actionBalanceScreenToInitScreen().event()) }
         }
 

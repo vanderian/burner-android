@@ -31,6 +31,7 @@ class LoadingLayout @JvmOverloads constructor(context: Context?, attrs: Attribut
 
   init {
     LayoutInflater.from(context).inflate(R.layout.view_loading, this, true)
+    setOnTouchListener { _, _ -> true } //consume touches
   }
 
   public override fun onAttachedToWindow() {

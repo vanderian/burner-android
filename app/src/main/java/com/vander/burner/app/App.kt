@@ -59,7 +59,7 @@ abstract class App : BaseApp() {
         RxSharedPreferences.create(prefs)
 
     @JvmStatic @Provides fun providesUuidPreference(@Permanent prefs: RxSharedPreferences): UUID {
-      val pref = prefs.getString("app_uuid")
+      val pref = prefs.getString("app.uuid")
       if (!pref.isSet) pref.set(UUID.randomUUID().toString())
       return UUID.fromString(pref.get())
     }

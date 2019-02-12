@@ -7,7 +7,6 @@ import com.vander.burner.app.net.safeApiCall
 import com.vander.burner.app.validator.AddressRule
 import com.vander.burner.app.validator.GreaterThenZeroRule
 import com.vander.burner.app.validator.NotEmptyRule
-import com.vander.scaffold.debug.log
 import com.vander.scaffold.event
 import com.vander.scaffold.form.Form
 import com.vander.scaffold.form.validator.ValidateRule
@@ -47,16 +46,14 @@ class SendModel @Inject constructor(
     val submit = intents.send()
         .flatMapMaybe { xdaiProvider.balance.safeApiCall(event) }
         .filter { form.validate(event, Validation(R.id.inputAmount, maxBalanceRule(it))) }
-        .flatMapMaybe {
+        .map {
           xdaiProvider.createTrx(
               form.inputText(R.id.inputAddress),
               form.inputText(R.id.inputAmount),
               form.inputText(R.id.inputMessage)
           )
-              .flatMap { trx -> xdaiProvider.transfer(trx).map { trx to it } }
-              .safeApiCall(event)
         }
-        .flatMapMaybe { (trx, hash) -> xdaiProvider.receipt(hash).safeApiCall(event).map { trx to it } }
+        .flatMapMaybe { xdaiProvider.transfer(it).safeApiCall(event) }
         .observeOn(AndroidSchedulers.mainThread())
         .flatMapMaybe { (t, r) ->
           intents.receipt(r, t.value!!.toEther(), fromScan)

@@ -6,6 +6,7 @@ import com.vander.burner.app.net.apiHandler
 import com.vander.burner.app.ui.asEthereumAddressShort
 import com.vander.scaffold.screen.Screen
 import io.reactivex.Observable
+import kotlinx.android.synthetic.main.layout_loading.*
 import kotlinx.android.synthetic.main.screen_balance.*
 import pm.gnosis.utils.asEthereumAddressString
 import pm.gnosis.utils.removeHexPrefix
@@ -20,7 +21,7 @@ class BalanceScreen : Screen<BalanceState, BalanceIntents>() {
     override fun receive(): Observable<Unit> = buttonReceive.clicks()
     override fun send(): Observable<Unit> = buttonSend.clicks()
     override fun scan(): Observable<Unit> = fab.clicks()
-    override fun events(): List<Observable<*>> = apiHandler { }
+    override fun events(): List<Observable<*>> = apiHandler { layoutLoading.toggle(it) }
   }
 
   override fun render(state: BalanceState) {

@@ -41,7 +41,6 @@ class SendScreen : Screen<SendState, SendIntents>() {
       inputAmount.setText(it.amount)
       inputMessage.setText(it.message)
     }
-    layoutLoading.setOnTouchListener { _, _ -> true }
   }
 
   override fun intents(): SendIntents = object : SendIntents {

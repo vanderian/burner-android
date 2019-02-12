@@ -8,10 +8,7 @@ import com.vander.burner.app.ui.ShowDialogEvent
 import com.vander.burner.app.ui.showConfirmDialog
 import com.vander.scaffold.screen.Event
 import com.vander.scaffold.screen.Screen
-import io.reactivex.Maybe
-import io.reactivex.Observable
-import io.reactivex.Observer
-import io.reactivex.Single
+import io.reactivex.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import pm.gnosis.ethereum.RequestFailedException
 import timber.log.Timber
@@ -75,6 +72,9 @@ fun Screen<*, *>.showRetryDialog(errorModel: ErrorModel): Maybe<Unit> =
             positiveButton = R.string.action_try_again
         )
     ).map { Unit }
+
+fun Completable.safeApiCall(eventObserver: Observer<Event>, errorEffect: ((ErrorModel) -> Unit)? = null): Completable =
+    this.toSingleDefault(Unit).safeApiCall(eventObserver, errorEffect).ignoreElement()
 
 fun <T> Single<T>.safeApiCall(eventObserver: Observer<Event>, errorEffect: ((ErrorModel) -> Unit)? = null): Maybe<T> =
     this
