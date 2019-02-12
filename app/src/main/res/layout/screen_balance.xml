@@ -43,6 +43,7 @@
             android:gravity="center"
             android:lines="1"
             android:textAppearance="?attr/textAppearanceHeadline1"
+            android:textColor="@color/textAmount"
             app:autoSizeMaxTextSize="48sp"
             app:autoSizeMinTextSize="12sp"
             app:autoSizeStepGranularity="2sp"

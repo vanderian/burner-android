@@ -7,21 +7,19 @@ import com.vander.burner.app.net.safeApiCall
 import com.vander.burner.app.validator.AddressRule
 import com.vander.burner.app.validator.GreaterThenZeroRule
 import com.vander.burner.app.validator.NotEmptyRule
-import com.vander.scaffold.debug.log
 import com.vander.scaffold.event
 import com.vander.scaffold.form.Form
 import com.vander.scaffold.form.validator.Validation
 import com.vander.scaffold.screen.PopStack
+import com.vander.scaffold.screen.PopStackTo
 import com.vander.scaffold.screen.Result
 import com.vander.scaffold.screen.ScreenModel
 import com.vander.scaffold.ui.with
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import pm.gnosis.utils.addHexPrefix
-import pm.gnosis.utils.asEthereumAddress
-import pm.gnosis.utils.toHex
-import pm.gnosis.utils.toHexString
+import pm.gnosis.models.Wei
 import javax.inject.Inject
 
 class SendModel @Inject constructor(
@@ -30,22 +28,31 @@ class SendModel @Inject constructor(
 ) : ScreenModel<SendState, SendIntents>(SendState()) {
 
   val form = Form().withInputValidations(
-      Validation(R.id.inputAddress, NotEmptyRule, AddressRule(accountRepository.address)),
+      Validation(R.id.inputAddress, NotEmptyRule, AddressRule(accountRepository.address)), //can send to own address ? why ?
       Validation(R.id.inputAmount, NotEmptyRule, GreaterThenZeroRule) //max balance rule
   )
 
   override fun collectIntents(intents: SendIntents, result: Observable<Result>): Disposable {
+    val fromScan = SendScreenArgs.fromBundle(args).transferData != null
 
     val submit = intents.send()
         .filter { form.validate(event) }
         .flatMapMaybe {
-          xdaiProvider.transfer(
+          xdaiProvider.createTrx(
               form.inputText(R.id.inputAddress),
               form.inputText(R.id.inputAmount),
               form.inputText(R.id.inputMessage)
-          ).safeApiCall(event)
+          )
+              .flatMap { trx -> xdaiProvider.transfer(trx).map { trx to it } }
+              .safeApiCall(event)
         }
-        .doOnNext { event.onNext(PopStack) }
+        .flatMapMaybe { (trx, hash) -> xdaiProvider.receipt(hash).safeApiCall(event).map { trx to it } }
+        .observeOn(AndroidSchedulers.mainThread())
+        .flatMapMaybe { (t, r) ->
+          intents.receipt(r, Wei(t.value).toEther(), fromScan)
+              .doOnSuccess { event.onNext(PopStackTo(R.id.balanceScreen, false)) }
+              .doOnComplete { event.onNext(PopStack) }
+        }
 
     val scan = intents.scan()
         .doOnNext { event.onNext(SendScreenDirections.actionSendScreenToScanScreen().event()) }

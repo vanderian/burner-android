@@ -15,7 +15,10 @@ import io.reactivex.Maybe
 import io.reactivex.Observable
 import kotlinx.android.parcel.Parcelize
 import me.dm7.barcodescanner.zxing.ZXingScannerView
+import pm.gnosis.model.Solidity
 import pm.gnosis.svalinn.common.utils.toast
+import pm.gnosis.utils.asEthereumAddressString
+import pm.gnosis.utils.removeHexPrefix
 
 fun Toolbar.animatedClose() = AnimatedVectorDrawableCompat.create(context, R.drawable.avd_close)?.run {
   navigationIcon = this
@@ -27,11 +30,10 @@ fun ZXingScannerView.scans(): Observable<String> =
       lateinit var handler: ZXingScannerView.ResultHandler
       handler = ZXingScannerView.ResultHandler {
         emitter.onNext(it.text)
-        resumeCameraPreview(handler)
+        postDelayed({ resumeCameraPreview(handler) }, 3000)
       }
       setResultHandler(handler)
       startCamera()
-//      postOnAnimationDelayed({ startCamera() }, 500)
       emitter.setCancellable { stopCamera() }
     }
 
@@ -76,3 +78,6 @@ data class ShowDialogEvent(
     @StringRes val negativeButton: Int = 0,
     val contentString: String? = null
 ) : Event, Parcelable
+
+
+fun Solidity.Address.asEthereumAddressShort() = asEthereumAddressString().removeHexPrefix().take(6)

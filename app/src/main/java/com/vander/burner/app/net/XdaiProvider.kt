@@ -3,21 +3,18 @@ package com.vander.burner.app.net
 import com.vander.burner.app.data.AccountRepository
 import com.vander.burner.app.di.Xdai
 import com.vander.scaffold.annotations.ApplicationScope
-import com.vander.scaffold.debug.log
-import io.reactivex.Observable
 import io.reactivex.Single
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.ECKeyPair
 import org.web3j.crypto.RawTransaction
 import org.web3j.crypto.TransactionEncoder
-import pm.gnosis.ethereum.EthCall
 import pm.gnosis.ethereum.EthGetTransactionCount
 import pm.gnosis.ethereum.EthereumRepository
-import pm.gnosis.ethereum.models.TransactionParameters
-import pm.gnosis.model.Solidity
-import pm.gnosis.models.Transaction
 import pm.gnosis.models.Wei
-import pm.gnosis.utils.*
+import pm.gnosis.utils.addHexPrefix
+import pm.gnosis.utils.asEthereumAddressString
+import pm.gnosis.utils.toHex
+import pm.gnosis.utils.toHexString
 import java.math.BigDecimal
 import java.math.BigInteger
 import javax.inject.Inject
@@ -39,13 +36,20 @@ class XdaiProvider @Inject constructor(
         .map { it.toEther() }
         .singleOrError()
 
-  fun transfer(to: String, amount: String, msg: String?) =
-      nonce.flatMap {
+  fun createTrx(to: String, amount: String, msg: String?) =
+      nonce.map {
         val message = msg.let { if (it.isNullOrBlank()) "0x" else it.toByteArray().toHex().addHexPrefix() }
-        val trx = RawTransaction.createTransaction(it, gasPrice, gas, to.asEthereumAddressString(), Wei.ether(amount).value, message)
-        val signed = TransactionEncoder.signMessage(trx, Credentials.create(ECKeyPair.create(accountRepository.keyPair.privKey)))
-        xdai.sendRawTransaction(signed.toHexString().addHexPrefix()).singleOrError()
+        RawTransaction.createTransaction(it, gasPrice, gas, to.asEthereumAddressString(), Wei.ether(amount).value, message)
       }
+
+  fun transfer(trx: RawTransaction) =
+      TransactionEncoder.signMessage(trx, Credentials.create(ECKeyPair.create(accountRepository.keyPair.privKey))).let {
+        xdai.sendRawTransaction(it.toHexString().addHexPrefix()).singleOrError()
+      }
+
+  fun receipt(hash: String) = xdai.getTransactionReceipt(hash).singleOrError()
+
+  fun trx(hash: String) = xdai.getTransactionByHash(hash).singleOrError()
 
   companion object {
     val gas = 120000L.toBigInteger()

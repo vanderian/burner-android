@@ -3,6 +3,7 @@ package com.vander.burner.app.ui.screen
 import com.jakewharton.rxbinding3.view.clicks
 import com.vander.burner.R
 import com.vander.burner.app.net.apiHandler
+import com.vander.burner.app.ui.asEthereumAddressShort
 import com.vander.scaffold.screen.Screen
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.screen_balance.*
@@ -25,6 +26,6 @@ class BalanceScreen : Screen<BalanceState, BalanceIntents>() {
   override fun render(state: BalanceState) {
     textBalance.text = NumberFormat.getCurrencyInstance(Locale.US).format(state.balance)
     imageBlockie.setAddress(state.address)
-    textAddressShort.text = state.address.asEthereumAddressString().removeHexPrefix().take(6)
+    textAddressShort.text = state.address.asEthereumAddressShort()
   }
 }

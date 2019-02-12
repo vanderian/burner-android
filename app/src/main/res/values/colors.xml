@@ -6,7 +6,9 @@
     <color name="colorSecondary">@color/colorPrimaryDark</color>
     <color name="colorStatusDark">@color/brown_900</color>
     <color name="colorError">@color/red_500</color>
+    <color name="textAmount">@color/teal_300</color>
 
     <color name="bg_dim">#a000</color>
+    <color name="bg_lighten">#1fff</color>
 
 </resources>
