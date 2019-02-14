@@ -45,6 +45,14 @@
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             />
+        <action
+            android:id="@+id/action_balanceScreen_to_pairScreen"
+            app:destination="@id/pairScreen"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            />
     </fragment>
 
     <fragment
@@ -84,15 +92,12 @@
             app:nullable="true"
             />
         <action
-            android:id="@+id/action_sendScreen_to_scanScreen"
-            app:destination="@id/scanScreen"
+            android:id="@+id/action_sendScreen_to_scanScreenForResult"
+            app:destination="@id/scanScreenForResult"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
-            app:launchSingleTop="true"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            app:popUpTo="@+id/sendScreen"
-            app:popUpToInclusive="true"
             />
     </fragment>
 
@@ -111,6 +116,13 @@
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             />
     </fragment>
+
+    <fragment
+        android:id="@+id/scanScreenForResult"
+        android:name="com.vander.burner.app.ui.screen.ScanScreen"
+        android:label="ScanScreen"
+        tools:layout="@layout/screen_scan"
+        />
 
     <fragment
         android:id="@+id/settingsScreen"
@@ -136,6 +148,30 @@
             app:popUpTo="@+id/main_graph"
             app:popUpToInclusive="true"
             />
+        <action
+            android:id="@+id/action_settingsScreen_to_pairScreen"
+            app:destination="@id/pairScreen"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            />
 
+    </fragment>
+
+    <fragment
+        android:id="@+id/pairScreen"
+        android:name="com.vander.burner.app.ui.screen.PairScreen"
+        android:label="PairScreen"
+        tools:layout="@layout/screen_pair"
+        >
+        <action
+            android:id="@+id/action_sendScreen_to_scanScreenForResult"
+            app:destination="@id/scanScreenForResult"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            />
     </fragment>
 </navigation>

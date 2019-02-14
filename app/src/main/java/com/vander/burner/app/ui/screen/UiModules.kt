@@ -30,6 +30,9 @@ object UiModules {
     @ScreenScope @ContributesAndroidInjector()
     abstract fun contributeSettingsScreen(): SettingsScreen
 
+    @ScreenScope @ContributesAndroidInjector()
+    abstract fun contributePairScreen(): PairScreen
+
   }
 
   @Module
@@ -51,6 +54,9 @@ object UiModules {
 
     @Binds @IntoMap @ViewModelKey(SettingsModel::class)
     abstract fun provideSettingsModel(viewModel: SettingsModel): ViewModel
+
+    @Binds @IntoMap @ViewModelKey(PairModel::class)
+    abstract fun providePairModel(viewModel: PairModel): ViewModel
 
   }
 }

@@ -14,6 +14,7 @@ import com.vander.burner.app.validator.DecimalDigitsInputFilter
 import com.vander.scaffold.form.FormInput
 import com.vander.scaffold.screen.Screen
 import com.vander.scaffold.ui.setText
+import com.vander.scaffold.ui.visibility
 import io.reactivex.Maybe
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.layout_appbar.*
@@ -36,11 +37,13 @@ class SendScreen : Screen<SendState, SendIntents>() {
     toolbar.animatedClose()
     form = FormInput().withTextInputs(inputAddress, inputAmount, inputMessage)
     inputAmount.editText!!.filters = arrayOf(DecimalDigitsInputFilter())
+/*
     navArgs<SendScreenArgs>().value.transferData?.let {
       inputAddress.setText(it.address)
       inputAmount.setText(it.amount)
       inputMessage.setText(it.message)
     }
+*/
   }
 
   override fun intents(): SendIntents = object : SendIntents {
@@ -54,12 +57,19 @@ class SendScreen : Screen<SendState, SendIntents>() {
     override fun scan(): Observable<Unit> = fab.clicks()
     override fun receipt(data: TransactionReceipt, amount: BigDecimal, hasAction: Boolean): Maybe<Unit> = receiptDialog(data, amount, hasAction)
 
-    override fun events(): List<Observable<*>> =
-        form.events(this@SendScreen) +
-            apiHandler { layoutLoading.toggle(it) }
+    override fun events(): List<Observable<*>> = listOf(
+        event(TransferData::class).doOnNext { fill(it)  }
+    ) + form.events(this@SendScreen) + apiHandler { layoutLoading.toggle(it) }
   }
 
   override fun render(state: SendState) {
+    fab.visibility = state.showFab.visibility()
+  }
+
+  private fun fill(transferData: TransferData) {
+    inputAddress.setText(transferData.address)
+    inputAmount.setText(transferData.amount)
+    inputMessage.setText(transferData.message)
   }
 
   private fun receiptDialog(data: TransactionReceipt, amount: BigDecimal, hasAction: Boolean) = Maybe.create<Unit> { emitter ->

@@ -38,7 +38,7 @@ class SettingsModel @Inject constructor(
     private val bip39: Bip39
 ) : ScreenModel<Empty, SettingsIntents>() {
 
-  val form = Form().withInputValidations(
+  val form = Form(event).withInputValidations(
       Validation(R.id.inputPrivate, NotEmptyRule, PrivateKeyRule),
       Validation(R.id.inputSeed, NotEmptyRule, SeedRule(bip39))
   )
@@ -63,7 +63,7 @@ class SettingsModel @Inject constructor(
         }
         .flatMapMaybe {
           xdaiProvider.burn()
-              .toMaybe<Unit>()
+              .toSingleDefault(Unit).toMaybe()
               .observeOn(AndroidSchedulers.mainThread())
               .onErrorResumeNext(intents.burnConfirm(
                   ShowDialogEvent(
@@ -84,12 +84,12 @@ class SettingsModel @Inject constructor(
 
     // todo withdraw or import
     val createPrivate = intents.createFromKey()
-        .filter { form.validate(event) }
+        .filter { form.validate() }
         .map { KeyPair.fromPrivate(form.inputText(R.id.inputPrivate).hexAsBigInteger()) }
 
     // todo withdraw or import
     val createSeed = intents.createFromSeed()
-        .filter { form.validate(event) }
+        .filter { form.validate() }
         .map { accountRepository.generetePk(bip39.mnemonicToSeed(form.inputText(R.id.inputSeed))) }
 
     val beer = intents.beer()
@@ -99,10 +99,14 @@ class SettingsModel @Inject constructor(
           )
         }
 
+    val pair = intents.pair()
+        .doOnNext { event.onNext(SettingsScreenDirections.actionSettingsScreenToPairScreen().event()) }
+
     return CompositeDisposable().with(
-        form.subscribe(intents, event),
+        form.subscribe(intents),
         intents.focusChanges().subscribe(),
         intents.show().subscribe(),
+        pair.subscribe(),
         burn.subscribe(),
         qr.subscribe(),
         copy.subscribe(),

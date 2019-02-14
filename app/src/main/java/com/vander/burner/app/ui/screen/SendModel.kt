@@ -16,6 +16,7 @@ import com.vander.scaffold.screen.PopStackTo
 import com.vander.scaffold.screen.Result
 import com.vander.scaffold.screen.ScreenModel
 import com.vander.scaffold.ui.with
+import com.vander.scaffold.unbundle
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -26,9 +27,9 @@ import javax.inject.Inject
 class SendModel @Inject constructor(
     private val accountRepository: AccountRepository,
     private val xdaiProvider: XdaiProvider
-) : ScreenModel<SendState, SendIntents>(SendState()) {
+) : ScreenModel<SendState, SendIntents>() {
 
-  val form = Form().withInputValidations(
+  val form = Form(event).withInputValidations(
       Validation(R.id.inputAddress, NotEmptyRule, AddressEnsRule(accountRepository.address)), //can send to own address ? why would you ?
       Validation(R.id.inputAmount, NotEmptyRule, GreaterThenZeroRule)
   )
@@ -41,11 +42,18 @@ class SendModel @Inject constructor(
   }
 
   override fun collectIntents(intents: SendIntents, result: Observable<Result>): Disposable {
-    val fromScan = SendScreenArgs.fromBundle(args).transferData != null
+    val data = SendScreenArgs.fromBundle(args).transferData
+    val fromScan = data != null
+    data?.let {
+      form.init(R.id.inputAddress, it.address)
+      form.init(R.id.inputAmount, it.amount)
+      form.init(R.id.inputMessage, it.message)
+    }
+    state.init(SendState(fromScan.not()))
 
     val submit = intents.send()
         .flatMapMaybe { xdaiProvider.balance.safeApiCall(event) }
-        .filter { form.validate(event, Validation(R.id.inputAmount, maxBalanceRule(it))) }
+        .filter { form.validate(Validation(R.id.inputAmount, maxBalanceRule(it))) }
         .map {
           xdaiProvider.createTrx(
               form.inputText(R.id.inputAddress),
@@ -62,10 +70,16 @@ class SendModel @Inject constructor(
         }
 
     val scan = intents.scan()
-        .doOnNext { event.onNext(SendScreenDirections.actionSendScreenToScanScreen().event()) }
+        .doOnNext { event.onNext(SendScreenDirections.actionSendScreenToScanScreenForResult().event()) }
+
+    val onResult = result
+        .filter { it.success && it.request == R.id.scanScreenForResult }
+        .map { it.extras!!.unbundle<TransferData>() }
+        .doOnNext { event.onNext(it) }
 
     return CompositeDisposable().with(
-        form.subscribe(intents, event),
+        form.subscribe(intents),
+        onResult.subscribe(),
         submit.subscribe(),
         scan.subscribe(),
         intents.navigation().subscribe { event.onNext(PopStack) }

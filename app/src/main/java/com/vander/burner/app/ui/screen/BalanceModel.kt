@@ -38,7 +38,11 @@ class BalanceModel @Inject constructor(
     val settings = intents.settings()
         .doOnNext { event.onNext(BalanceScreenDirections.actionBalanceScreenToSettingsScreen().event()) }
 
+    val pair = intents.pair()
+        .doOnNext { event.onNext(BalanceScreenDirections.actionBalanceScreenToPairScreen().event()) }
+
     return CompositeDisposable().with(
+        pair.subscribe(),
         balance.subscribe(),
         receive.subscribe(),
         send.subscribe(),

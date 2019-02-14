@@ -19,7 +19,7 @@ data class TransferData(
     val address: String,
     val amount: String = "",
     val message: String = ""
-) : Parcelable
+) : Parcelable, Event
 
 data class UnknownQrCode(val value: String) : Event
 
@@ -49,7 +49,9 @@ interface ReceiveIntents : NavigationIntent, FormIntents {
   fun toggle(): Observable<Unit>
 }
 
-class SendState() : Screen.State
+data class SendState(
+    val showFab: Boolean
+) : Screen.State
 
 interface SendIntents : FormIntents, NavigationIntent {
   fun send(): Observable<Unit>
@@ -74,3 +76,12 @@ interface SettingsIntents : NavigationIntent, FormIntents {
 
 data class ClipboardEvent(val text: String): Event
 data class ShowKeyEvent(val bmp: Bitmap): Event
+
+data class PairState(
+    val address: Solidity.Address?
+): Screen.State
+
+interface PairIntents: NavigationIntent, FormIntents {
+  fun pair(): Observable<Unit>
+  fun scan(): Observable<Unit>
+}
