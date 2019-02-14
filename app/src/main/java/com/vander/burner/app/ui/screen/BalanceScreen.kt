@@ -13,6 +13,7 @@ import io.reactivex.Observable
 import kotlinx.android.synthetic.main.layout_appbar.*
 import kotlinx.android.synthetic.main.layout_loading.*
 import kotlinx.android.synthetic.main.screen_balance.*
+import java.lang.RuntimeException
 import java.text.NumberFormat
 import java.util.*
 
@@ -30,7 +31,7 @@ class BalanceScreen : Screen<BalanceState, BalanceIntents>() {
     override fun send(): Observable<Unit> = buttonSend.clicks()
     override fun scan(): Observable<Unit> = fab.clicks()
     override fun settings(): Observable<Unit> = toolbar.itemClicks().map { Unit }
-    override fun events(): List<Observable<*>> = apiHandler { layoutLoading.toggle(it) }
+    override fun events(): List<Observable<*>> = apiHandler { /*layoutLoading.toggle(it)*/ }
   }
 
   override fun render(state: BalanceState) {

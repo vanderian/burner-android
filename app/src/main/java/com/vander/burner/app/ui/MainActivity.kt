@@ -1,6 +1,8 @@
 package com.vander.burner.app.ui
 
+import android.os.Bundle
 import androidx.navigation.NavGraph
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.vander.burner.R
 import com.vander.burner.app.data.AccountRepository
 import com.vander.scaffold.ui.NavigationActivity
@@ -16,6 +18,13 @@ class MainActivity : NavigationActivity() {
       if (accountStorage.hasCredentials) {
         startDestination = R.id.balanceScreen
       }
+    }
+  }
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    navController.addOnDestinationChangedListener { _, destination, _ ->
+      FirebaseAnalytics.getInstance(this).setCurrentScreen(this, destination.label.toString(), null)
     }
   }
 

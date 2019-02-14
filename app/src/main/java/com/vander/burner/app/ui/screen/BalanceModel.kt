@@ -3,6 +3,7 @@ package com.vander.burner.app.ui.screen
 import com.f2prateek.rx.preferences2.Preference
 import com.vander.burner.app.data.AccountRepository
 import com.vander.burner.app.net.XdaiProvider
+import com.vander.burner.app.net.errorHandlingCall
 import com.vander.burner.app.net.safeApiCall
 import com.vander.scaffold.event
 import com.vander.scaffold.screen.Result
@@ -35,8 +36,8 @@ class BalanceModel @Inject constructor(
     val scan = intents.scan()
         .doOnNext { event.onNext(BalanceScreenDirections.actionBalanceScreenToScanScreen().event()) }
 
-    val balance = Observable.interval(3, TimeUnit.SECONDS).startWith(0)
-        .flatMapMaybe { xdaiProvider.balance.doOnSuccess { state.next { copy(balance = it.toEther()) } }.safeApiCall(event) }
+    val balance = Observable.interval(4, TimeUnit.SECONDS).startWith(0)
+        .flatMapMaybe { xdaiProvider.balance.doOnSuccess { state.next { copy(balance = it.toEther()) } }.errorHandlingCall(event) }
 
     val settings = intents.settings()
         .doOnNext { event.onNext(BalanceScreenDirections.actionBalanceScreenToSettingsScreen().event()) }

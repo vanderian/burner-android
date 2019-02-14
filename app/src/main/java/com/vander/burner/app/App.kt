@@ -4,13 +4,18 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import com.crashlytics.android.Crashlytics
 import com.f2prateek.rx.preferences2.RxSharedPreferences
+import com.google.firebase.FirebaseApp
 import com.vander.burner.app.di.Permanent
 import com.vander.burner.app.di.ScreenSize
 import com.vander.scaffold.BaseApp
 import com.vander.scaffold.BaseAppModule
 import dagger.Provides
 import de.adorsys.android.securestoragelibrary.SecurePreferences
+import io.fabric.sdk.android.Fabric
+import io.reactivex.android.plugins.RxAndroidPlugins
+import io.reactivex.plugins.RxJavaPlugins
 import me.dm7.barcodescanner.core.DisplayUtils
 import pm.gnosis.crypto.LinuxSecureRandom
 import timber.log.Timber
@@ -28,6 +33,8 @@ abstract class App : BaseApp() {
     super.onCreate()
     setupRx()
     clearKeyStoreOnInstall()
+
+    Fabric.with(this, Crashlytics())
 
     try {
       LinuxSecureRandom()

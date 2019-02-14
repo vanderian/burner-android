@@ -8,6 +8,7 @@ apply plugin: 'com.gladed.androidgitversion'
 apply plugin: 'de.mobilej.unmock'
 apply plugin: 'androidx.navigation.safeargs.kotlin'
 apply plugin: 'com.google.android.gms.oss-licenses-plugin'
+apply plugin: 'io.fabric'
 
 apply from: rootProject.file("gradle/compile.gradle")
 apply from: rootProject.file("gradle/android.gradle")
@@ -20,6 +21,12 @@ androidGitVersion {
     codeFormat 'MNNPPP'
 }
 
+afterEvaluate {
+    if (!android.applicationVariants.matching { it.buildType.name == 'release' }.isEmpty()) {
+        crashlyticsUploadDistributionRelease.dependsOn assembleRelease, rootProject.generateChangelog
+    }
+}
+
 android {
     defaultConfig {
         applicationId 'com.vander.burner'
@@ -27,7 +34,7 @@ android {
         versionCode androidGitVersion.code()
         multiDexEnabled true
 
-        buildConfigField "String", "UNSPENT_SINK", '"0x4edd7ee0834a157f461af282b8e99e213679177f"'
+        ext.betaDistributionReleaseNotesFilePath = "build/CHANGELOG.md"
     }
 
     signingConfigs {
@@ -43,11 +50,13 @@ android {
 
     buildTypes {
         debug {
-            applicationIdSuffix ".debug"
+            applicationIdSuffix ".dev"
             buildConfigField "String", "CLIENT_URL", '"http://localhost:3000/"'
+            buildConfigField "String", "UNSPENT_SINK", '"0x4edd7ee0834a157f461af282b8e99e213679177f"'
         }
         release {
             buildConfigField "String", "CLIENT_URL", '"https://xdai.io/"'
+            buildConfigField "String", "UNSPENT_SINK", '"0xd68d19a46ad7A5E3932294DeD70de210ae38c0E4"' //todo replace with gitcoin B-W grant
 //            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             if (isCI()) {
@@ -80,6 +89,13 @@ dependencies {
     implementation "androidx.room:room-runtime:$versions.androidx_room"
     implementation "androidx.room:room-rxjava2:$versions.androidx_room"
     implementation "me.dm7.barcodescanner:zxing:1.9.8"
+    implementation "de.adorsys.android:securestoragelibrary:1.0.3"
+    implementation "com.airbnb.android:lottie:2.5.5"
+    implementation "com.google.android.gms:play-services-oss-licenses:16.0.2"
+    implementation 'com.google.firebase:firebase-core:16.0.7'
+    implementation('com.crashlytics.sdk.android:crashlytics:2.9.9@aar') {
+        transitive = true
+    }
 
     implementation "com.google.code.gson:gson:2.8.5"
     implementation "com.squareup.okhttp3:okhttp:3.11.0"
@@ -92,10 +108,6 @@ dependencies {
     implementation "com.github.gnosis.svalinn-kotlin:crypto:$versions.svalinn"
     implementation "com.github.gnosis.svalinn-kotlin:mnemonic-android:$versions.svalinn"
     implementation "com.github.gnosis.svalinn-kotlin:blockies:$versions.svalinn"
-
-    implementation "de.adorsys.android:securestoragelibrary:1.0.3"
-    implementation "com.airbnb.android:lottie:2.5.5"
-    implementation "com.google.android.gms:play-services-oss-licenses:16.0.2"
 
     kapt "androidx.room:room-compiler:$versions.androidx_room"
     kapt "androidx.lifecycle:lifecycle-compiler:2.0.0"
@@ -116,3 +128,5 @@ dependencies {
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$versions.kotlin"
     testImplementation "org.amshove.kluent:kluent:1.42"
 }
+
+apply plugin: 'com.google.gms.google-services'
