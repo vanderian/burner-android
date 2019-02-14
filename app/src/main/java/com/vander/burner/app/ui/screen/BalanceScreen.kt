@@ -37,6 +37,11 @@ class BalanceScreen : Screen<BalanceState, BalanceIntents>() {
     textBalance.text = NumberFormat.getCurrencyInstance(Locale.US).format(state.balance)
     imageBlockie.setAddress(state.address)
     textAddressShort.text = state.address.asEthereumAddressShort()
-    buttonPair.visibility = state.isPaired.not().visibility()
+    groupPaired.visibility = (state.pairedAddress != null).visibility()
+    buttonPair.visibility = (state.pairedAddress == null).visibility()
+    state.pairedAddress?.let {
+      imageBlockiePaired.setAddress(it)
+      textAddressPaired.text = state.pairedAddress.asEthereumAddressShort()
+    }
   }
 }

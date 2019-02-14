@@ -31,6 +31,16 @@
                 android:layout_marginTop="24dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                tools:background="@color/white"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_my_address"
+                android:textAppearance="?attr/textAppearanceOverline"
+                app:layout_constraintBottom_toTopOf="@+id/textAddressShort"
+                app:layout_constraintLeft_toLeftOf="@+id/textAddressShort"
                 />
 
             <TextView
@@ -98,6 +108,48 @@
                 app:layout_constraintWidth_percent="0.4"
                 />
 
+            <com.vander.burner.app.ui.misc.BlockiesImageView
+                android:id="@+id/imageBlockiePaired"
+                android:layout_width="@dimen/blockie_size"
+                android:layout_height="@dimen/blockie_size"
+                android:layout_marginTop="24dp"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/textAddressPaired"
+                app:layout_constraintTop_toBottomOf="@+id/buttonReceive"
+                tools:background="@color/white"
+                />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/groupPaired"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:constraint_referenced_ids="_label, textAddressPaired, imageBlockiePaired"
+                />
+
+            <TextView
+                android:id="@+id/_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_paired"
+                android:textAppearance="?attr/textAppearanceOverline"
+                app:layout_constraintBottom_toTopOf="@+id/textAddressPaired"
+                app:layout_constraintLeft_toLeftOf="@+id/textAddressPaired"
+                />
+
+            <TextView
+                android:id="@+id/textAddressPaired"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                app:layout_constraintBottom_toBottomOf="@+id/imageBlockiePaired"
+                app:layout_constraintLeft_toRightOf="@+id/imageBlockiePaired"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/imageBlockiePaired"
+                tools:text="asdfgh"
+                />
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/buttonPair"
                 android:layout_width="0dp"
@@ -109,6 +161,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/buttonSend"
                 app:layout_constraintWidth_percent="0.5"
+                tools:visibility="gone"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

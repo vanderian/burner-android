@@ -38,8 +38,8 @@ class ReceiveScreen : Screen<ReceiveState, ReceiveIntents>(), HandlesBack {
       get() = this@ReceiveScreen.toolbar
 
     override fun copy(): Observable<Unit> = Observable.merge(
-        buttonAddress.clicks().map { requireContext().copyToClipboard("public key", buttonAddress.text.toString(), R.string.label_copy_address) },
-        textUrl.clicks().map { requireContext().copyToClipboard("request link", textUrl.text, R.string.label_copy_link) }
+        buttonAddress.clicks().map { requireContext().copyToClipboard("public key", buttonAddress.text.toString(), R.string.result_copy_address) },
+        textUrl.clicks().map { requireContext().copyToClipboard("request link", textUrl.text, R.string.result_copy_link) }
     ).map { Unit }
 
     override fun toggle(): Observable<Unit> = Observable.merge(

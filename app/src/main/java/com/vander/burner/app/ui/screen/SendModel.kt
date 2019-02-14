@@ -44,12 +44,10 @@ class SendModel @Inject constructor(
   override fun collectIntents(intents: SendIntents, result: Observable<Result>): Disposable {
     val data = SendScreenArgs.fromBundle(args).transferData
     val fromScan = data != null
-    data?.let {
-      form.init(R.id.inputAddress, it.address)
-      form.init(R.id.inputAmount, it.amount)
-      form.init(R.id.inputMessage, it.message)
+    if (!state.hasValue()) {
+      data?.let { event.onNext(it) }
+      state.onNext(SendState(fromScan.not()))
     }
-    state.init(SendState(fromScan.not()))
 
     val submit = intents.send()
         .flatMapMaybe { xdaiProvider.balance.safeApiCall(event) }

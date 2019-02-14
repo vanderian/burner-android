@@ -18,10 +18,13 @@ import javax.inject.Inject
 class BalanceModel @Inject constructor(
     private val xdaiProvider: XdaiProvider,
     accountRepository: AccountRepository,
-    paired: Preference<Solidity.Address>
-) : ScreenModel<BalanceState, BalanceIntents>(BalanceState(accountRepository.address, paired.isSet)) {
+    private val paired: Preference<Solidity.Address>
+) : ScreenModel<BalanceState, BalanceIntents>(BalanceState(accountRepository.address)) {
 
   override fun collectIntents(intents: BalanceIntents, result: Observable<Result>): Disposable {
+
+    val pairedAddress = paired.asObservable()
+        .doOnNext { state.next { copy(pairedAddress = if (paired.isSet) paired.get() else null) } }
 
     val receive = intents.receive()
         .doOnNext { event.onNext(BalanceScreenDirections.actionBalanceScreenToReceiveScreen().event()) }
@@ -43,6 +46,7 @@ class BalanceModel @Inject constructor(
 
     return CompositeDisposable().with(
         pair.subscribe(),
+        pairedAddress.subscribe(),
         balance.subscribe(),
         receive.subscribe(),
         send.subscribe(),

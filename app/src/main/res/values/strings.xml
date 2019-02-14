@@ -13,6 +13,7 @@
     <string name="action_copy_pk">Copy PK</string>
     <string name="action_settings">Settings</string>
     <string name="action_pair">Pair</string>
+    <string name="action_clear">Clear</string>
     <string name="action_beer">Buy me a beer</string>
 
     <string name="title_receive">Receive</string>
@@ -27,13 +28,18 @@
     <string name="label_message">Message</string>
     <string name="label_message_request">Message or Item</string>
     <string name="label_loading">Loading…</string>
-    <string name="label_copy_address">Address copied to clipboard</string>
-    <string name="label_copy_link">Request link copied to clipboard</string>
-    <string name="label_paired">Address paired</string>
+    <string name="label_paired">Paired Address</string>
+    <string name="label_my_address">My Address</string>
     <string name="label_private_key">Private key</string>
     <string name="label_address">Address</string>
 
-    <string name="hint_address_ens">0x… or *.eth</string>
+    <string name="result_copy_address">Address copied to clipboard</string>
+    <string name="result_copy_link">Request link copied to clipboard</string>
+    <string name="result_paired">Address paired</string>
+
+    <string name="hint_address_ens">0x…</string>
+    <!--todo ENS-->
+    <!--<string name="hint_address_ens">0x… or *.eth</string>-->
     <string name="hint_address">0x…</string>
     <string name="hint_amount">$0.00</string>
     <string name="hint_message">optional unencrypted message</string>
@@ -41,7 +47,8 @@
     <string name="hint_seed">Seed phrase</string>
 
     <string name="error_form_address_own">Cannot send to own address</string>
-    <string name="error_form_address_ens">Please enter a valid address or ENS</string>
+    <string name="error_form_address_ens">Please enter a valid address</string>
+    <!--<string name="error_form_address_ens">Please enter a valid address or ENS</string>-->
     <string name="error_form_address">Please enter a valid address</string>
     <string name="error_form_seed">Please enter a valid mnemonic seed</string>
     <string name="error_form_empty">This field cannot be empty</string>
@@ -58,8 +65,9 @@
     <string name="dialog_burn_title">Burn Private Key</string>
     <string name="dialog_burn_message_error">Some error occurred when sending funds. <b>Beware! You will loose your funds!</b></string>
     <string name="dialog_burn_message_paired">Are you sure you want to burn this private key?\n\nThe remaining funds will be send to your paired address!</string>
-    <string name="dialog_burn_message">Are you sure you want to burn this private key?\n\nYou will loose your funds! They will be send to support this app.</string>
+    <string name="dialog_burn_message">Are you sure you want to burn this private key?\n\n<b>Beware! You will loose your funds!</b> They will be donated to GitCoin Grant.</string>
     <string name="rationale_pairing">You should sweep any value you hold to a cold wallet regularly and burn your ephemeral private key.
         A burner wallet is analogous to cash; you won\'t carry too much because it can be lost but it\'s astonishingly easy to exchange.
-        Pair with a secure address you own, where you keep your funds in a cold wallet. Remaining value will be send to this address on burning.</string>
+        Pair with a secure address you own, where you keep your funds in a cold wallet. Remaining value will be send to this address on burning.
+        Or donated to Burner Wallet GitCoin Grant if none paired.</string>
 </resources>

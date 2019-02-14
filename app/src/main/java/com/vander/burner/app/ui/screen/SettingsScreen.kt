@@ -56,7 +56,7 @@ class SettingsScreen : Screen<Empty, SettingsIntents>() {
     }
 
     override fun events(): List<Observable<*>> = listOf(
-        event(ClipboardEvent::class).doOnNext { requireContext().copyToClipboard("pk", it.text, R.string.label_copy_address) },
+        event(ClipboardEvent::class).doOnNext { requireContext().copyToClipboard("pk", it.text, R.string.result_copy_address) },
         event(ShowKeyEvent::class).doOnNext { if (imageQrPrivate.drawable == null) imageQrPrivate.setImageBitmap(it.bmp) }
     ) + form.events(this@SettingsScreen) + apiHandler { }
   }

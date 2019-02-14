@@ -9,10 +9,10 @@ import com.vander.burner.app.ui.animatedClose
 import com.vander.scaffold.form.FormInput
 import com.vander.scaffold.screen.Screen
 import com.vander.scaffold.ui.setText
+import com.vander.scaffold.ui.visibility
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.layout_appbar.*
 import kotlinx.android.synthetic.main.screen_pair.*
-import pm.gnosis.utils.asEthereumAddressString
 
 class PairScreen : Screen<PairState, PairIntents>() {
   private lateinit var form: FormInput
@@ -35,6 +35,7 @@ class PairScreen : Screen<PairState, PairIntents>() {
 
     override fun pair(): Observable<Unit> = buttonPair.clicks()
     override fun scan(): Observable<Unit> = fab.clicks()
+    override fun clear(): Observable<Unit> = buttonClear.clicks()
 
     override fun events(): List<Observable<*>> = listOf(
         event(TransferData::class).doOnNext { inputAddress.setText(it.address) }
@@ -42,7 +43,8 @@ class PairScreen : Screen<PairState, PairIntents>() {
   }
 
   override fun render(state: PairState) {
-    state.address?.let { inputAddress.setText(state.address.asEthereumAddressString()) }
+    inputAddress.setText(state.address)
+    buttonClear.visibility = state.address.isNotEmpty().visibility()
   }
 
 }

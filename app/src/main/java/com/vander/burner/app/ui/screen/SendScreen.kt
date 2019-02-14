@@ -37,13 +37,6 @@ class SendScreen : Screen<SendState, SendIntents>() {
     toolbar.animatedClose()
     form = FormInput().withTextInputs(inputAddress, inputAmount, inputMessage)
     inputAmount.editText!!.filters = arrayOf(DecimalDigitsInputFilter())
-/*
-    navArgs<SendScreenArgs>().value.transferData?.let {
-      inputAddress.setText(it.address)
-      inputAmount.setText(it.amount)
-      inputMessage.setText(it.message)
-    }
-*/
   }
 
   override fun intents(): SendIntents = object : SendIntents {

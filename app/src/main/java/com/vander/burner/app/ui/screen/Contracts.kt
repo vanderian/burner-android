@@ -25,7 +25,7 @@ data class UnknownQrCode(val value: String) : Event
 
 data class BalanceState(
     val address: Solidity.Address,
-    val isPaired: Boolean,
+    val pairedAddress: Solidity.Address? = null,
     val balance: BigDecimal = BigDecimal.ZERO
 ) : Screen.State
 
@@ -78,10 +78,11 @@ data class ClipboardEvent(val text: String): Event
 data class ShowKeyEvent(val bmp: Bitmap): Event
 
 data class PairState(
-    val address: Solidity.Address?
+    val address: String = ""
 ): Screen.State
 
 interface PairIntents: NavigationIntent, FormIntents {
   fun pair(): Observable<Unit>
+  fun clear(): Observable<Unit>
   fun scan(): Observable<Unit>
 }
