@@ -7,7 +7,8 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorOnPrimary">@color/white</item>
         <item name="colorOnSecondary">@color/white</item>
-        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorOnSurface">@color/highlight</item>
+        <item name="colorSecondary">@color/highlight</item>
         <item name="colorError">@color/colorError</item>
         <item name="android:statusBarColor">?android:colorBackground</item>
         <item name="button">@style/Button</item>
@@ -26,6 +27,11 @@
 
     <style name="ButtonOutline" parent="Widget.MaterialComponents.Button.OutlinedButton.Icon">
         <item name="iconGravity">textStart</item>
+    </style>
+
+    <style name="ButtonSmall" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textAppearance">?attr/textAppearanceOverline</item>
+        <item name="iconSize">16dp</item>
     </style>
 
 </resources>

@@ -42,6 +42,7 @@ class SettingsScreen : Screen<Empty, SettingsIntents>() {
 
     override fun burn(): Observable<Unit> = buttonBurn.clicks()
     override fun burnConfirm(ev: ShowDialogEvent): Maybe<Unit> = requireContext().showConfirmDialog(ev)
+    override fun pair(): Observable<Unit> = buttonPair.clicks()
     override fun copy(): Observable<Unit> = buttonCopy.clicks()
     override fun show(): Observable<Unit> = buttonShow.clicks().doOnNext { imageQrPrivate.visibility = imageQrPrivate.isVisible().not().visibility() }
     override fun createFromKey(): Observable<Unit> = buttonCreatePrivate.clicks()

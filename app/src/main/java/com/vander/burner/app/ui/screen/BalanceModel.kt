@@ -1,5 +1,6 @@
 package com.vander.burner.app.ui.screen
 
+import com.f2prateek.rx.preferences2.Preference
 import com.vander.burner.app.data.AccountRepository
 import com.vander.burner.app.net.XdaiProvider
 import com.vander.burner.app.net.safeApiCall
@@ -10,13 +11,15 @@ import com.vander.scaffold.ui.with
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import pm.gnosis.model.Solidity
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class BalanceModel @Inject constructor(
     private val xdaiProvider: XdaiProvider,
-    private val accountRepository: AccountRepository
-) : ScreenModel<BalanceState, BalanceIntents>(BalanceState(accountRepository.address)) {
+    accountRepository: AccountRepository,
+    paired: Preference<Solidity.Address>
+) : ScreenModel<BalanceState, BalanceIntents>(BalanceState(accountRepository.address, paired.isSet)) {
 
   override fun collectIntents(intents: BalanceIntents, result: Observable<Result>): Disposable {
 

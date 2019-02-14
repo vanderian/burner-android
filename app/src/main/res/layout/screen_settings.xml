@@ -35,10 +35,22 @@
                 android:layout_marginTop="24dp"
                 android:text="@string/action_burn"
                 app:icon="@drawable/ic_fire_black_24dp"
-                app:iconGravity="textStart"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonPair"
+                style="?attr/buttonOutline"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/action_pair"
+                app:icon="@drawable/ic_sync_black_24dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/buttonBurn"
                 />
 
             <com.google.android.material.button.MaterialButton
@@ -53,7 +65,7 @@
                 app:iconGravity="textStart"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@+id/buttonCopy"
-                app:layout_constraintTop_toBottomOf="@+id/buttonBurn"
+                app:layout_constraintTop_toBottomOf="@+id/buttonPair"
                 />
 
             <com.google.android.material.button.MaterialButton
@@ -68,7 +80,7 @@
                 app:iconGravity="textStart"
                 app:layout_constraintLeft_toRightOf="@+id/buttonShow"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/buttonBurn"
+                app:layout_constraintTop_toBottomOf="@+id/buttonPair"
                 />
 
             <ImageView
@@ -186,13 +198,13 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/buttonBeer"
-                style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                style="@style/ButtonSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/action_beer"
-                app:iconSize="16dp"
                 android:textAppearance="?attr/textAppearanceOverline"
-                app:icon="@drawable/ic_beer_solid"
+                app:icon="@drawable/ic_beer_black_24dp"
+                app:iconSize="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/_space"

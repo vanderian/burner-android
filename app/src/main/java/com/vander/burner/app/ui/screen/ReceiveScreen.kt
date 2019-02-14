@@ -15,8 +15,6 @@ import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.layout_appbar.*
 import kotlinx.android.synthetic.main.screen_receive.*
-import me.dm7.barcodescanner.core.DisplayUtils
-import kotlin.math.min
 
 class ReceiveScreen : Screen<ReceiveState, ReceiveIntents>(), HandlesBack {
   private val back = PublishSubject.create<Unit>()
@@ -61,7 +59,7 @@ class ReceiveScreen : Screen<ReceiveState, ReceiveIntents>(), HandlesBack {
     }
     groupInputs.visibility = state.showValues.visibility()
     groupButtons.visibility = state.showValues.not().visibility()
-    buttonAddress.text = state.qrString
+    buttonAddress.text = state.address
     textUrl.text = state.qrString
   }
 

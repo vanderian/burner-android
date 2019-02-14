@@ -12,6 +12,7 @@
     <string name="action_show_pk">Show PK</string>
     <string name="action_copy_pk">Copy PK</string>
     <string name="action_settings">Settings</string>
+    <string name="action_pair">Pair</string>
     <string name="action_beer">Buy me a beer</string>
 
     <string name="title_receive">Receive</string>

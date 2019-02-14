@@ -35,7 +35,7 @@
         android:drawableTop="@drawable/ic_receipt_check"
         android:drawablePadding="8dp"
         android:textAppearance="?attr/textAppearanceHeadline5"
-        android:textColor="@color/textAmount"
+        android:textColor="?attr/colorOnSurface"
         app:layout_constraintBottom_toTopOf="@+id/_line"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

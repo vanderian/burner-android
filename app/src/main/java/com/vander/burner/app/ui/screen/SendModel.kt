@@ -29,8 +29,8 @@ class SendModel @Inject constructor(
 ) : ScreenModel<SendState, SendIntents>(SendState()) {
 
   val form = Form().withInputValidations(
-      Validation(R.id.inputAddress, NotEmptyRule, AddressEnsRule(accountRepository.address)), //can send to own address ? why ?
-      Validation(R.id.inputAmount, NotEmptyRule, GreaterThenZeroRule) //max balance rule
+      Validation(R.id.inputAddress, NotEmptyRule, AddressEnsRule(accountRepository.address)), //can send to own address ? why would you ?
+      Validation(R.id.inputAmount, NotEmptyRule, GreaterThenZeroRule)
   )
 
   private fun maxBalanceRule(balance: Wei) = object : ValidateRule() {

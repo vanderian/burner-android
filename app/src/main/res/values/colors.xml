@@ -3,10 +3,10 @@
     <color name="colorPrimary">@color/orange_700</color>
     <color name="colorPrimaryDark">#b53d00</color>
     <color name="colorPrimaryLight">#ff9d3f</color>
-    <color name="colorSecondary">@color/colorPrimaryDark</color>
+    <color name="colorSecondary">@color/colorPrimaryLight</color>
     <color name="colorStatusDark">@color/brown_900</color>
     <color name="colorError">@color/red_500</color>
-    <color name="textAmount">@color/teal_300</color>
+    <color name="highlight">@color/teal_300</color>
     <color name="textSecondaryDisabled">#4CFFFFFF</color>
 
     <color name="bg_dim">#a000</color>
