@@ -35,6 +35,8 @@ android {
         multiDexEnabled true
 
         ext.betaDistributionReleaseNotesFilePath = "build/CHANGELOG.md"
+
+        buildConfigField "String", "EXLPORER_ADDRESS_URL", '"https://blockscout.com/poa/dai/address/"'
     }
 
     signingConfigs {

@@ -31,6 +31,8 @@ class BalanceScreen : Screen<BalanceState, BalanceIntents>() {
     override fun send(): Observable<Unit> = buttonSend.clicks()
     override fun scan(): Observable<Unit> = fab.clicks()
     override fun settings(): Observable<Unit> = toolbar.itemClicks().map { Unit }
+    override fun explorerAddress(): Observable<Unit> = Observable.merge(imageBlockie.clicks(), textAddressShort.clicks())
+    override fun explorerPaired(): Observable<Unit> = Observable.merge(imageBlockiePaired.clicks(), textAddressPaired.clicks())
     override fun events(): List<Observable<*>> = apiHandler { /*layoutLoading.toggle(it)*/ }
   }
 

@@ -1,17 +1,20 @@
 package com.vander.burner.app.ui.screen
 
+import android.content.Intent
 import com.f2prateek.rx.preferences2.Preference
+import com.vander.burner.BuildConfig
 import com.vander.burner.app.data.AccountRepository
 import com.vander.burner.app.net.XdaiProvider
 import com.vander.burner.app.net.errorHandlingCall
-import com.vander.burner.app.net.safeApiCall
 import com.vander.scaffold.event
+import com.vander.scaffold.screen.NextActivity
 import com.vander.scaffold.screen.Result
 import com.vander.scaffold.screen.ScreenModel
 import com.vander.scaffold.ui.with
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import pm.gnosis.crypto.utils.asEthereumAddressChecksumString
 import pm.gnosis.model.Solidity
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -45,7 +48,15 @@ class BalanceModel @Inject constructor(
     val pair = intents.pair()
         .doOnNext { event.onNext(BalanceScreenDirections.actionBalanceScreenToPairScreen().event()) }
 
+    val explorer = Observable.merge(
+        intents.explorerAddress().map { stateValue.address.asEthereumAddressChecksumString() },
+        intents.explorerPaired().map { paired.get().asEthereumAddressChecksumString() }
+    )
+        .map { NextActivity(Intent.parseUri("${BuildConfig.EXLPORER_ADDRESS_URL}$it", 0)) }
+        .doOnNext { event.onNext(it) }
+
     return CompositeDisposable().with(
+        explorer.subscribe(),
         pair.subscribe(),
         pairedAddress.subscribe(),
         balance.subscribe(),

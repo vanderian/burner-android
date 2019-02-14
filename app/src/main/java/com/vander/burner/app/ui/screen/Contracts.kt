@@ -35,6 +35,8 @@ interface BalanceIntents : Screen.Intents {
   fun scan(): Observable<Unit>
   fun settings(): Observable<Unit>
   fun pair(): Observable<Unit>
+  fun explorerAddress(): Observable<Unit>
+  fun explorerPaired(): Observable<Unit>
 }
 
 data class ReceiveState(
