@@ -36,9 +36,6 @@ class ReceiveScreen : Screen<ReceiveState, ReceiveIntents>(), HandlesBack {
     override val form: FormInput
       get() = this@ReceiveScreen.form
 
-    override val size: Int
-      get() = DisplayUtils.getScreenResolution(requireContext()).run { min(x, y) } //todo inject
-
     override val toolbar: Toolbar
       get() = this@ReceiveScreen.toolbar
 

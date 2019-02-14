@@ -27,6 +27,9 @@ object UiModules {
     @ScreenScope @ContributesAndroidInjector()
     abstract fun contributeScanScreen(): ScanScreen
 
+    @ScreenScope @ContributesAndroidInjector()
+    abstract fun contributeSettingsScreen(): SettingsScreen
+
   }
 
   @Module
@@ -45,6 +48,9 @@ object UiModules {
 
     @Binds @IntoMap @ViewModelKey(ScanModel::class)
     abstract fun provideScanModel(viewModel: ScanModel): ViewModel
+
+    @Binds @IntoMap @ViewModelKey(SettingsModel::class)
+    abstract fun provideSettingsModel(viewModel: SettingsModel): ViewModel
 
   }
 }

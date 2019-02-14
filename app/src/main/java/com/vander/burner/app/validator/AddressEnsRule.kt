@@ -6,9 +6,9 @@ import pm.gnosis.model.Solidity
 import pm.gnosis.utils.asEthereumAddress
 import java.net.IDN
 
-class AddressRule(val address: Solidity.Address) : ValidateRule() {
+class AddressEnsRule(val address: Solidity.Address) : ValidateRule() {
   override val errorRes: Int
-    get() = R.string.error_form_address
+    get() = R.string.error_form_address_ens
 
   override fun validate(text: String) =
       text.asEthereumAddress().let { it != null && it != address } or

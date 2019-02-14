@@ -10,11 +10,22 @@
         <item name="colorSecondary">@color/colorSecondary</item>
         <item name="colorError">@color/colorError</item>
         <item name="android:statusBarColor">?android:colorBackground</item>
+        <item name="button">@style/Button</item>
+        <item name="buttonOutline">@style/ButtonOutline</item>
+        <item name="materialButtonStyle">?attr/button</item>
 
         <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense</item>
         <item name="actionBarTheme">@style/ThemeOverlay.MaterialComponents.Dark.ActionBar</item>
         <item name="actionBarPopupTheme">@style/ThemeOverlay.MaterialComponents.Light</item>
 
+    </style>
+
+    <style name="Button" parent="Widget.MaterialComponents.Button.Icon">
+        <item name="iconGravity">textStart</item>
+    </style>
+
+    <style name="ButtonOutline" parent="Widget.MaterialComponents.Button.OutlinedButton.Icon">
+        <item name="iconGravity">textStart</item>
     </style>
 
 </resources>

@@ -3,12 +3,12 @@ package com.vander.burner.app.data
 import com.f2prateek.rx.preferences2.RxSharedPreferences
 import com.vander.burner.R
 import com.vander.scaffold.annotations.ApplicationScope
-import com.vander.scaffold.debug.log
 import de.adorsys.android.securestoragelibrary.SecurePreferences
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import okio.ByteString
+import org.web3j.crypto.MnemonicUtils
 import pm.gnosis.crypto.KeyGenerator
 import pm.gnosis.crypto.KeyPair
 import pm.gnosis.mnemonic.Bip39
@@ -33,6 +33,8 @@ class AccountRepository @Inject constructor(
       return with(addressPref.get()) { KeyPair.fromPrivate(SecurePreferences.getStringValue(this, null)!!.hexAsBigInteger()) }
     }
 
+  val keyPairAsync: Single<KeyPair> = Single.fromCallable { keyPair }.subscribeOn(Schedulers.computation())
+
   val address: Solidity.Address
     get() {
       check(hasCredentials)
@@ -46,10 +48,12 @@ class AccountRepository @Inject constructor(
     SecurePreferences.setValue(address, keyPair.privKey.toHexString())
   }
 
+  fun generetePk(seed: ByteArray) = KeyGenerator.masterNode(ByteString.of(*seed)).derive(KeyGenerator.BIP44_PATH_ETHEREUM).deriveChild(0).keyPair
+
   fun createAccount(): Completable =
       if (hasCredentials) Completable.complete()
       else Single.fromCallable { bip39.mnemonicToSeed(bip39.generateMnemonic(languageId = R.id.english)) }
-          .map { KeyGenerator.masterNode(ByteString.of(*it)).derive(KeyGenerator.BIP44_PATH_ETHEREUM).deriveChild(0).keyPair }
+          .map { generetePk(it) }
           .doOnSuccess { save(it) }
           .ignoreElement()
           .subscribeOn(Schedulers.computation())

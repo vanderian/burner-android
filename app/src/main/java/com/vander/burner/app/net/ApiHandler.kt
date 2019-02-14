@@ -73,9 +73,6 @@ fun Screen<*, *>.showRetryDialog(errorModel: ErrorModel): Maybe<Unit> =
         )
     ).map { Unit }
 
-fun Completable.safeApiCall(eventObserver: Observer<Event>, errorEffect: ((ErrorModel) -> Unit)? = null): Completable =
-    this.toSingleDefault(Unit).safeApiCall(eventObserver, errorEffect).ignoreElement()
-
 fun <T> Single<T>.safeApiCall(eventObserver: Observer<Event>, errorEffect: ((ErrorModel) -> Unit)? = null): Maybe<T> =
     this
         .loadingCall(eventObserver)

@@ -1,15 +1,23 @@
 <resources>
     <string name="action_burn">Burn</string>
+    <string name="action_burn_it">Burn It</string>
     <string name="action_receive">Receive</string>
     <string name="action_send">Send</string>
     <string name="action_try_again">Try again</string>
     <string name="action_close">Close</string>
+    <string name="action_cancel">Cancel</string>
     <string name="action_scan_next">Scan next</string>
     <string name="action_set_values">Set request values</string>
+    <string name="action_create">Create</string>
+    <string name="action_show_pk">Show PK</string>
+    <string name="action_copy_pk">Copy PK</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_beer">Buy me a beer</string>
 
     <string name="title_receive">Receive</string>
     <string name="title_send">Send</string>
     <string name="title_receipt">Receipt</string>
+    <string name="title_settings">Settings</string>
 
     <string name="label_to">To Address</string>
     <string name="label_amount">Send Amount</string>
@@ -19,14 +27,19 @@
     <string name="label_loading">Loading…</string>
     <string name="label_copy_address">Address copied to clipboard</string>
     <string name="label_copy_link">Request link copied to clipboard</string>
+    <string name="label_private_key">Private key</string>
 
-    <string name="hint_address">0x… or *.eth</string>
+    <string name="hint_address_ens">0x… or *.eth</string>
+    <string name="hint_address">0x…</string>
     <string name="hint_amount">$0.00</string>
     <string name="hint_message">optional unencrypted message</string>
     <string name="hint_message_request">Hot Dogs</string>
+    <string name="hint_seed">Seed phrase</string>
 
     <string name="error_form_address_own">Cannot send to own address</string>
-    <string name="error_form_address">Please enter a valid address or ENS</string>
+    <string name="error_form_address_ens">Please enter a valid address or ENS</string>
+    <string name="error_form_address">Please enter a valid address</string>
+    <string name="error_form_seed">Please enter a valid mnemonic seed</string>
     <string name="error_form_empty">This field cannot be empty</string>
     <string name="error_form_amount">Amount must be greater then 0</string>
     <string name="error_form_max_balance">Insufficient funds</string>
@@ -38,4 +51,8 @@
     <string name="error_app_qr">Unresolvable QR code: %1$s</string>
 
     <string name="dialog_error_title">Network Error</string>
+    <string name="dialog_burn_title">Burn Private Key</string>
+    <string name="dialog_burn_message_error">Some error occurred when sending funds. <b>Beware! You will loose your funds!</b></string>
+    <string name="dialog_burn_message_paired">Are you sure you want to burn this private key?\n\nThe remaining funds will be send to your paired address!</string>
+    <string name="dialog_burn_message">Are you sure you want to burn this private key?\n\nYou will loose your funds! They will be send to support this app.</string>
 </resources>

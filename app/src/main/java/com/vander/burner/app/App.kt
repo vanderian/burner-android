@@ -6,14 +6,17 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import com.f2prateek.rx.preferences2.RxSharedPreferences
 import com.vander.burner.app.di.Permanent
+import com.vander.burner.app.di.ScreenSize
 import com.vander.scaffold.BaseApp
 import com.vander.scaffold.BaseAppModule
 import dagger.Provides
 import de.adorsys.android.securestoragelibrary.SecurePreferences
+import me.dm7.barcodescanner.core.DisplayUtils
 import pm.gnosis.crypto.LinuxSecureRandom
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
+import kotlin.math.min
 
 @BuildTypeComponent
 abstract class App : BaseApp() {
@@ -64,6 +67,8 @@ abstract class App : BaseApp() {
       return UUID.fromString(pref.get())
     }
 
+    @JvmStatic @Provides @ScreenSize fun providesSmallestWidth(context: Context): Int =
+        DisplayUtils.getScreenResolution(context).run { min(x, y) }
   }
 }
 

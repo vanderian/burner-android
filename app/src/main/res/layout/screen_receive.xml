@@ -41,7 +41,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/buttonAddress"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+                style="?attr/buttonOutline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"

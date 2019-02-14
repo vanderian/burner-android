@@ -20,12 +20,6 @@ class BalanceModel @Inject constructor(
 
   override fun collectIntents(intents: BalanceIntents, result: Observable<Result>): Disposable {
 
-    val burn = intents.burn()
-        .flatMapCompletable {
-          xdaiProvider.burn().andThen(accountRepository.burn()).safeApiCall(event)
-              .doOnComplete { event.onNext(BalanceScreenDirections.actionBalanceScreenToInitScreen().event()) }
-        }
-
     val receive = intents.receive()
         .doOnNext { event.onNext(BalanceScreenDirections.actionBalanceScreenToReceiveScreen().event()) }
 
@@ -38,12 +32,15 @@ class BalanceModel @Inject constructor(
     val balance = Observable.interval(3, TimeUnit.SECONDS).startWith(0)
         .flatMapMaybe { xdaiProvider.balance.doOnSuccess { state.next { copy(balance = it.toEther()) } }.safeApiCall(event) }
 
+    val settings = intents.settings()
+        .doOnNext { event.onNext(BalanceScreenDirections.actionBalanceScreenToSettingsScreen().event()) }
+
     return CompositeDisposable().with(
         balance.subscribe(),
-        burn.subscribe(),
         receive.subscribe(),
         send.subscribe(),
-        scan.subscribe()
+        scan.subscribe(),
+        settings.subscribe()
     )
   }
 }

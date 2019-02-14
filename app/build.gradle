@@ -27,7 +27,7 @@ android {
         versionCode androidGitVersion.code()
         multiDexEnabled true
 
-        buildConfigField "String", "UNSPENT_SINK", '"0x90e3678cdcc722e57fd7d2c4b96dd4bd7471a135"'
+        buildConfigField "String", "UNSPENT_SINK", '"0x4edd7ee0834a157f461af282b8e99e213679177f"'
     }
 
     signingConfigs {
@@ -69,7 +69,6 @@ configurations.all {
 
 dependencies {
     compile('org.web3j:core:4.1.0-android')
-
 
     implementation "androidx.multidex:multidex:2.0.1"
     implementation "androidx.cardview:cardview:1.0.0"

@@ -4,7 +4,7 @@ import com.vander.burner.R
 import com.vander.burner.app.data.AccountRepository
 import com.vander.burner.app.net.XdaiProvider
 import com.vander.burner.app.net.safeApiCall
-import com.vander.burner.app.validator.AddressRule
+import com.vander.burner.app.validator.AddressEnsRule
 import com.vander.burner.app.validator.GreaterThenZeroRule
 import com.vander.burner.app.validator.NotEmptyRule
 import com.vander.scaffold.event
@@ -29,7 +29,7 @@ class SendModel @Inject constructor(
 ) : ScreenModel<SendState, SendIntents>(SendState()) {
 
   val form = Form().withInputValidations(
-      Validation(R.id.inputAddress, NotEmptyRule, AddressRule(accountRepository.address)), //can send to own address ? why ?
+      Validation(R.id.inputAddress, NotEmptyRule, AddressEnsRule(accountRepository.address)), //can send to own address ? why ?
       Validation(R.id.inputAmount, NotEmptyRule, GreaterThenZeroRule) //max balance rule
   )
 

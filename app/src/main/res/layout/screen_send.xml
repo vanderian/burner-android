@@ -38,7 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:hint="@string/hint_address"
+                android:hint="@string/hint_address_ens"
                 app:layout_constraintTop_toTopOf="parent"
                 >
 
@@ -65,7 +65,7 @@
                 android:id="@+id/inputAmount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="@dimen/input_space_label"
                 android:hint="@string/hint_amount"
                 app:layout_constraintTop_toBottomOf="@+id/inputAddress"
                 >
@@ -93,7 +93,7 @@
                 android:id="@+id/inputMessage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="@dimen/input_space_label"
                 android:hint="@string/hint_message"
                 app:layout_constraintTop_toBottomOf="@+id/inputAmount"
                 >

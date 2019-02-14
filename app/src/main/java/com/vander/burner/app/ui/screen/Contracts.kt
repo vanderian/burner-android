@@ -2,6 +2,7 @@ package com.vander.burner.app.ui.screen
 
 import android.graphics.Bitmap
 import android.os.Parcelable
+import com.vander.burner.app.ui.ShowDialogEvent
 import com.vander.scaffold.form.FormIntents
 import com.vander.scaffold.screen.Event
 import com.vander.scaffold.screen.NavigationIntent
@@ -28,10 +29,10 @@ data class BalanceState(
 ) : Screen.State
 
 interface BalanceIntents : Screen.Intents {
-  fun burn(): Observable<Unit>
   fun receive(): Observable<Unit>
   fun send(): Observable<Unit>
   fun scan(): Observable<Unit>
+  fun settings(): Observable<Unit>
 }
 
 data class ReceiveState(
@@ -41,7 +42,6 @@ data class ReceiveState(
 ) : Screen.State
 
 interface ReceiveIntents : NavigationIntent, FormIntents {
-  val size: Int
   fun copy(): Observable<Unit>
   fun toggle(): Observable<Unit>
 }
@@ -57,3 +57,16 @@ interface SendIntents : FormIntents, NavigationIntent {
 interface ScanIntents : NavigationIntent {
   fun scan(): Observable<String>
 }
+
+interface SettingsIntents : NavigationIntent, FormIntents {
+  fun burn(): Observable<Unit>
+  fun burnConfirm(ev: ShowDialogEvent): Maybe<Unit>
+  fun copy(): Observable<Unit>
+  fun show(): Observable<Unit>
+  fun createFromKey(): Observable<Unit>
+  fun createFromSeed(): Observable<Unit>
+  fun beer(): Observable<Unit>
+}
+
+data class ClipboardEvent(val text: String): Event
+data class ShowKeyEvent(val bmp: Bitmap): Event
