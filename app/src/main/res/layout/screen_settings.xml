@@ -211,4 +211,7 @@
                 />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
+    <include layout="@layout/layout_loading" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

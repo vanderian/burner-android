@@ -19,6 +19,7 @@ import com.vander.scaffold.ui.visibility
 import io.reactivex.Maybe
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.layout_appbar.*
+import kotlinx.android.synthetic.main.layout_loading.*
 import kotlinx.android.synthetic.main.screen_settings.*
 
 class SettingsScreen : Screen<Empty, SettingsIntents>() {
@@ -58,7 +59,7 @@ class SettingsScreen : Screen<Empty, SettingsIntents>() {
     override fun events(): List<Observable<*>> = listOf(
         event(ClipboardEvent::class).doOnNext { requireContext().copyToClipboard("pk", it.text, R.string.result_copy_address) },
         event(ShowKeyEvent::class).doOnNext { if (imageQrPrivate.drawable == null) imageQrPrivate.setImageBitmap(it.bmp) }
-    ) + form.events(this@SettingsScreen) + apiHandler { }
+    ) + form.events(this@SettingsScreen) + apiHandler { layoutLoading.visibility = it.visibility() }
   }
 
   override fun render(state: Empty) {

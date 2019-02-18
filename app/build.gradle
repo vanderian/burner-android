@@ -58,7 +58,7 @@ android {
         }
         release {
             buildConfigField "String", "CLIENT_URL", '"https://xdai.io/"'
-            buildConfigField "String", "UNSPENT_SINK", '"0xd68d19a46ad7A5E3932294DeD70de210ae38c0E4"' //todo replace with gitcoin B-W grant
+            buildConfigField "String", "UNSPENT_SINK", '"0x0B1C36Fd1a300c75271f5cf958dEb1CF92F24cDd"' //todo replace with gitcoin B-W grant
 //            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             if (isCI()) {

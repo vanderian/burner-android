@@ -11,9 +11,7 @@ import com.vander.scaffold.screen.Screen
 import com.vander.scaffold.ui.visibility
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.layout_appbar.*
-import kotlinx.android.synthetic.main.layout_loading.*
 import kotlinx.android.synthetic.main.screen_balance.*
-import java.lang.RuntimeException
 import java.text.NumberFormat
 import java.util.*
 

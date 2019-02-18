@@ -20,7 +20,7 @@ buildscript {
         classpath "com.selesse:gradle-git-changelog:0.3.0"
         classpath "de.mobilej.unmock:UnMockPlugin:0.6.4"
         classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4.7.2"
-        classpath "android.arch.navigation:navigation-safe-args-gradle-plugin:1.0.0-beta01"
+        classpath "android.arch.navigation:navigation-safe-args-gradle-plugin:1.0.0-beta02"
         classpath "com.google.android.gms:oss-licenses-plugin:0.9.4"
         classpath 'com.google.gms:google-services:4.2.0'
         classpath 'io.fabric.tools:gradle:1.27.1'

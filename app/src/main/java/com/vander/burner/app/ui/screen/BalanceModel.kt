@@ -39,7 +39,7 @@ class BalanceModel @Inject constructor(
     val scan = intents.scan()
         .doOnNext { event.onNext(BalanceScreenDirections.actionBalanceScreenToScanScreen().event()) }
 
-    val balance = Observable.interval(4, TimeUnit.SECONDS).startWith(0)
+    val balance = Observable.interval(XdaiProvider.BLOCK_TIME, TimeUnit.SECONDS).startWith(0)
         .flatMapMaybe { xdaiProvider.balance.doOnSuccess { state.next { copy(balance = it.toEther()) } }.errorHandlingCall(event) }
 
     val settings = intents.settings()

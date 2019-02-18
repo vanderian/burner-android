@@ -5,6 +5,7 @@ import com.vander.burner.app.data.AccountRepository
 import com.vander.burner.app.di.Xdai
 import com.vander.scaffold.annotations.ApplicationScope
 import io.reactivex.Completable
+import io.reactivex.Flowable
 import io.reactivex.Single
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.ECKeyPair
@@ -20,7 +21,10 @@ import pm.gnosis.utils.*
 import timber.log.Timber
 import java.math.BigDecimal
 import java.math.BigInteger
+import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Inject
+
 
 @ApplicationScope
 class XdaiProvider @Inject constructor(
@@ -43,6 +47,14 @@ class XdaiProvider @Inject constructor(
 
   private fun receipt(trxToHash: Pair<Transaction, String>) =
       xdai.getTransactionReceipt(trxToHash.second).singleOrError()
+          .retryWhen { errors ->
+            val counter = AtomicInteger()
+            errors.takeWhile { counter.getAndIncrement() != 3 }
+                .flatMap {
+                  Timber.d(it)
+                  Flowable.timer(BLOCK_TIME, TimeUnit.SECONDS)
+                }
+          }
           .map { trxToHash.first to it }
 
   val balance: Single<Wei>
@@ -59,7 +71,7 @@ class XdaiProvider @Inject constructor(
           .map { trx.copy(nonce = it.nonce, gasPrice = gasPrice(it), gas = it.gas) }
           .singleOrError()
 
-  fun call(trx: Transaction): Single<Transaction> = xdai.request(EthCall(accountRepository.address, trx))
+  fun call(trx: Transaction): Single<Transaction> = xdai.request(EthCall(accountRepository.address, trx, block = Block.LATEST))
       .doOnNext { Timber.d(it.checkedResult()) }
       .map { trx }
       .singleOrError()
@@ -93,6 +105,8 @@ class XdaiProvider @Inject constructor(
       }
 
   companion object {
+    const val BLOCK_TIME = 5L
+
     private val gasMin = 21000.toBigInteger()
     private val gasPriceMin: BigInteger = BigDecimal(1.1).movePointRight(9).toBigInteger()
 
