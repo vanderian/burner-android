@@ -19,6 +19,7 @@ androidExtensions {
 
 androidGitVersion {
     codeFormat 'MNNPPP'
+    hideBranches = ['.*']
 }
 
 afterEvaluate {
