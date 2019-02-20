@@ -166,6 +166,6 @@ fabric.properties
 
 # End of https://www.gitignore.io/api/android,androidstudio
 /tokens.properties
-#*.jks
+*.jks
 publish.gradle
 /app/google-services.json

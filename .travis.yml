@@ -1,0 +1,31 @@
+language: android
+cache:
+  directories:
+  - "$HOME/.gradle/caches/"
+  - "$HOME/.gradle/wrapper/"
+  - "$HOME/.android/build-cache"
+android:
+  components:
+  - tools
+  - platform-tools
+  - build-tools-28.0.3
+  - android-28
+branches:
+  only:
+  - master
+#env:
+#  global:
+#  - secure: sy1tScXwmeOXUsLECfA/l57NX7sckCtaDu6SLH7uHMRY/EDRcUpiXGQsePINOxfsoeEXDwsFSxFu61A1KKgjh4GZSCFnI7leQjD9dhxSW+NnDWbNmKwBeKc8Y5ZHv8LPMu4vyugbA8/QoINIDgFdFqAJqbnZXa7pOj1V21u0o/OXAKYRQdOLqS6TLMFLn//sjMmnhJgx34rHA6LTcpSMxruf1HbGnh7sAWQzsiBSrl2vpC3zLyQYJA/fdMEnQ9ZXPcR7GbyYaY2RPueRTvr0pN2X4LpYUXnLKKtO3yb1cqFE4rw2Rsh3J/hTApvo+iz+N2nhqYDj75Jif9TxBEQGTkiWjbyAktl9mXtXBGwJUf1k5BsHWwqrc9995AtysPqlH3qOg0+QInE39thboYSzBWCYB6xgFvI2WVCq0Uzoi4+ml+Zjxci6nTTwUZBqKFL5J/kzO1B+zu6vaag1Sy7lenxZJCsQaYSJXB97Fy7Ei+W77K99oe2oAacNNu0hbbCsXS5OjOa3sWw4K6XvQcVbOX68TPjyW/QtCb2wOeoWLpQylBEYswlMnge8kz+8ELZZmEsUs09cflvBy9i0tEvR3RXyffpmt1Unepp6mJMrol5Fq1wIs/5F/8mAJ35Hv35Rrz5qxXoVQMxlZEOzRGj3hHnbH/h+Na0BXT+Elci2NSU=
+#  - secure: nqCGBafzHZxGhIIB/A7NyRDOY5DAJ9HrsBdeg2zdbraePXIz2hfVN/SkFgHaqe2qN0ngfyxtfnXmgJCWao0sofApXY7FQrP0pqOIbFeio2dMEZvzStAe0IXYvcyvLh+HZwPylr9/3i0Kb3sMDKsZ2PTJUWdQ3IMYbNw8E9Xm6TXWS2ITXXZ+YfclAr0EEC1Io1os3P3/Nw+wTRBJNy7IyTI8NdGyBOlwyhgb9B8EzWFfIYqM9xQpBE3i+sT6NYYG29UAs7x+KbCgl0TiW3+JGOzxtNVWn6DAaPEa7ELTXu1NMGLkiEWz2UvigSnTZzTLNn7EaOqSxCyte0noc9QWHwEhf8IRcKmGGpZKJRbTiHkfHl06eOq+LYxxW2nA4grc4dpqiN7MvCoUfVQSB+BzwHuqTdKcsNiN0zUaJt78PnNanMInK9+2BYOZm5GSyx9PG3N4dHhg0gDPOEWTntt7V5yXlbz5IhxtvMPh8SrOxyFPWtu542zNY03ZZ4SVrz0qndy9c8NaELSBl7EZY412xw6LfGPFi4+HC3676NBs/CeSY97RhoLuADaMBeSrmfUKr3c2Im7jUNy/wTvrHsgb2myvpWiDM6j/X7aAJgi8OzqvQQqIVO8QkuDBeqe8rSXmn5jnwumROKKmLj8ao67RBmIT7fhUpOSJdu3GsOsnt4M=
+#  - secure: fF84dmXkkVGw8a/ztHWNl2fB4h0LGo+8YWnBaY4IIsLi5ZGtot8wKgNYq4Mtqt/TNgYN6un6aYwbz2yEgVeEi2SKOtvkkEV6L7UglSUiEygWeV8NCk/23a2lLmA+WNHkqM860RfwTS7s6xEvU5e2cF7Gm5F6fhM+5hqMcN25YuZHrmvvrWlegDOybb7QpUpMlxhgxb1JZQgPiWBUBvgLlRIqcRv2ooZpVa9doqn23Rl6RyxMjLnhv/kDR2tYjxEcidTPyl2j4GjQ7E4R2xS2DBla8voxu+sQnN7sdlq7WD4C+R1kiQhYClqctmn8aJmKi1L8HN0ijNC3ycKOtOOCMl69p/pufQitNgn0fhJVbOmHYn1hMpwiI5z5ehhOQh7zJRtfmUWP78JefaepGxN8iUr/KEomBWsQ0tC+MuzXfDrWzyz15xfYVrWH0/uaUSLUxPyoK363+rOfwFs8W9Tz6fqMaI7qRXVZ5XrboWdHUnWTOdqk8caj8dcaAmcBTeFg5Oih8IQvEvkk2J/CUXst4+dKdwg23DOwLNxVqUhlfaTd2zQfU2SNoR9MVhHSSAPiaw6FZfQfIGD9xQNGlmi8XLjXsIS1EpkKLAFLRhMFkofflmYcJC0BzowmoqPCwgyDUc5eKELZOBemGzIhHh292OuPaVVlilVynkPIDYAuN6Y=
+#before_install:
+#- openssl aes-256-cbc -K $encrypted_4bb6d5505985_key -iv $encrypted_4bb6d5505985_iv
+#  -in secrets.tar.enc -out secrets.tar -d
+#- tar xvf secrets.tar
+script:
+- "./gradlew assembleRelease --stacktrace --no-daemon"
+before_cache:
+- rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+- rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+after_success:
+- "./gradlew crashlyticsUploadDistributionRelease"
