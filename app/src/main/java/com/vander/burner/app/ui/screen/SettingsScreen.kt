@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.layout_appbar.*
 import kotlinx.android.synthetic.main.layout_loading.*
 import kotlinx.android.synthetic.main.screen_settings.*
 
-class SettingsScreen : Screen<Empty, SettingsIntents>() {
+class SettingsScreen : Screen<SettingsState, SettingsIntents>() {
   private lateinit var form: FormInput
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -62,8 +62,14 @@ class SettingsScreen : Screen<Empty, SettingsIntents>() {
     ) + form.events(this@SettingsScreen) + apiHandler { layoutLoading.visibility = it.visibility() }
   }
 
-  override fun render(state: Empty) {
-
+  override fun render(state: SettingsState) {
+    if (state.isEmpty) {
+      buttonCreatePrivate.setText(R.string.action_create)
+      buttonCreateSeed.setText(R.string.action_create)
+    } else {
+      buttonCreatePrivate.setText(R.string.action_withdraw)
+      buttonCreateSeed.setText(R.string.action_withdraw)
+    }
   }
 
   private fun buttonForInput(id: Int) = when (id) {

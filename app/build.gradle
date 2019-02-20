@@ -55,7 +55,7 @@ android {
         debug {
             applicationIdSuffix ".dev"
             buildConfigField "String", "CLIENT_URL", '"http://localhost:3000/"'
-            buildConfigField "String", "UNSPENT_SINK", '"0x4edd7ee0834a157f461af282b8e99e213679177f"'
+            buildConfigField "String", "UNSPENT_SINK", '"0xeafb611d13514317a5c6c97ca16e128c64bde0ba"'
         }
         release {
             buildConfigField "String", "CLIENT_URL", '"https://xdai.io/"'

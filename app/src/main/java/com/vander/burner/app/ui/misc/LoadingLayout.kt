@@ -91,7 +91,7 @@ class LoadingLayout @JvmOverloads constructor(context: Context?, attrs: Attribut
     }
   }
 
-  fun toggle(show: Boolean) {
+  fun shouldShow(show: Boolean) {
     if (show) show() else hide()
   }
 

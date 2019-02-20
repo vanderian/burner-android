@@ -33,6 +33,9 @@ object UiModules {
     @ScreenScope @ContributesAndroidInjector()
     abstract fun contributePairScreen(): PairScreen
 
+    @ScreenScope @ContributesAndroidInjector()
+    abstract fun contributeWithdrawScreen(): WithdrawScreen
+
   }
 
   @Module
@@ -57,6 +60,9 @@ object UiModules {
 
     @Binds @IntoMap @ViewModelKey(PairModel::class)
     abstract fun providePairModel(viewModel: PairModel): ViewModel
+
+    @Binds @IntoMap @ViewModelKey(WithdrawModel::class)
+    abstract fun provideWithdrawModel(viewModel: WithdrawModel): ViewModel
 
   }
 }

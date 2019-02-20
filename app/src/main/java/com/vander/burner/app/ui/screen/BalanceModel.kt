@@ -5,7 +5,6 @@ import com.f2prateek.rx.preferences2.Preference
 import com.vander.burner.BuildConfig
 import com.vander.burner.app.data.AccountRepository
 import com.vander.burner.app.net.XdaiProvider
-import com.vander.burner.app.net.errorHandlingCall
 import com.vander.scaffold.event
 import com.vander.scaffold.screen.NextActivity
 import com.vander.scaffold.screen.Result
@@ -16,7 +15,6 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import pm.gnosis.crypto.utils.asEthereumAddressChecksumString
 import pm.gnosis.model.Solidity
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class BalanceModel @Inject constructor(
@@ -39,8 +37,8 @@ class BalanceModel @Inject constructor(
     val scan = intents.scan()
         .doOnNext { event.onNext(BalanceScreenDirections.actionBalanceScreenToScanScreen().event()) }
 
-    val balance = Observable.interval(XdaiProvider.BLOCK_TIME, TimeUnit.SECONDS).startWith(0)
-        .flatMapMaybe { xdaiProvider.balance.doOnSuccess { state.next { copy(balance = it.toEther()) } }.errorHandlingCall(event) }
+    val balance = xdaiProvider.balance(event)
+        .doOnNext { state.next { copy(balance = it.toEther()) } }
 
     val settings = intents.settings()
         .doOnNext { event.onNext(BalanceScreenDirections.actionBalanceScreenToSettingsScreen().event()) }

@@ -71,6 +71,11 @@
             app:popUpTo="@+id/initScreen"
             app:popUpToInclusive="true"
             />
+        <argument
+            android:name="keys"
+            android:defaultValue=" "
+            app:argType="string"
+            />
     </fragment>
 
     <fragment
@@ -115,6 +120,14 @@
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             />
+        <action
+            android:id="@+id/action_scanScreen_to_initScreen"
+            app:destination="@id/initScreen"
+            />
+        <action
+            android:id="@+id/action_scanScreen_to_withdrawScreen"
+            app:destination="@id/withdrawScreen"
+            />
     </fragment>
 
     <fragment
@@ -147,10 +160,23 @@
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@+id/main_graph"
             app:popUpToInclusive="true"
-            />
+            >
+            <argument
+                android:name="keys"
+                android:defaultValue=" "
+                />
+        </action>
         <action
             android:id="@+id/action_settingsScreen_to_pairScreen"
             app:destination="@id/pairScreen"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            />
+        <action
+            android:id="@+id/action_settingsScreen_to_withdrawScreen"
+            app:destination="@id/withdrawScreen"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
@@ -172,6 +198,18 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            />
+    </fragment>
+
+    <fragment
+        android:id="@+id/withdrawScreen"
+        android:name="com.vander.burner.app.ui.screen.WithdrawScreen"
+        android:label="WithdrawScreen"
+        tools:layout="@layout/screen_withdraw"
+        >
+        <argument
+            android:name="keys"
+            app:argType="string"
             />
     </fragment>
 </navigation>

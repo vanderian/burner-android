@@ -6,15 +6,16 @@ import com.vander.burner.R
 import com.vander.burner.app.data.AccountRepository
 import com.vander.burner.app.di.ScreenSize
 import com.vander.burner.app.net.XdaiProvider
+import com.vander.burner.app.net.errorHandlingCall
+import com.vander.burner.app.net.loadingCall
 import com.vander.burner.app.ui.ShowDialogEvent
 import com.vander.burner.app.ui.Utils
+import com.vander.burner.app.validator.MnemonicRule
 import com.vander.burner.app.validator.NotEmptyRule
 import com.vander.burner.app.validator.PrivateKeyRule
-import com.vander.burner.app.validator.SeedRule
 import com.vander.scaffold.event
 import com.vander.scaffold.form.Form
 import com.vander.scaffold.form.validator.Validation
-import com.vander.scaffold.screen.Empty
 import com.vander.scaffold.screen.PopStack
 import com.vander.scaffold.screen.Result
 import com.vander.scaffold.screen.ScreenModel
@@ -23,10 +24,8 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import pm.gnosis.crypto.KeyPair
 import pm.gnosis.mnemonic.Bip39
 import pm.gnosis.model.Solidity
-import pm.gnosis.utils.hexAsBigInteger
 import pm.gnosis.utils.toHexString
 import javax.inject.Inject
 
@@ -36,11 +35,11 @@ class SettingsModel @Inject constructor(
     private val paired: Preference<Solidity.Address>,
     @ScreenSize private val size: Int,
     private val bip39: Bip39
-) : ScreenModel<Empty, SettingsIntents>() {
+) : ScreenModel<SettingsState, SettingsIntents>() {
 
   val form = Form(event).withInputValidations(
       Validation(R.id.inputPrivate, NotEmptyRule, PrivateKeyRule),
-      Validation(R.id.inputSeed, NotEmptyRule, SeedRule(bip39))
+      Validation(R.id.inputSeed, NotEmptyRule, MnemonicRule(bip39))
   )
 
   override fun collectIntents(intents: SettingsIntents, result: Observable<Result>): Disposable {
@@ -63,7 +62,7 @@ class SettingsModel @Inject constructor(
         }
         .flatMapMaybe {
           xdaiProvider.burn()
-              .toSingleDefault(Unit).toMaybe()
+              .toSingleDefault(Unit).loadingCall(event).toMaybe()
               .observeOn(AndroidSchedulers.mainThread())
               .onErrorResumeNext(intents.burnConfirm(
                   ShowDialogEvent(
@@ -82,15 +81,22 @@ class SettingsModel @Inject constructor(
         .flatMapSingle { pk }
         .doOnNext { event.onNext(ClipboardEvent(it)) }
 
-    // todo withdraw or import
     val createPrivate = intents.createFromKey()
         .filter { form.validate() }
-        .map { KeyPair.fromPrivate(form.inputText(R.id.inputPrivate).hexAsBigInteger()) }
+        .map { form.inputText(R.id.inputPrivate) }
 
-    // todo withdraw or import
     val createSeed = intents.createFromSeed()
         .filter { form.validate() }
-        .map { accountRepository.generetePk(bip39.mnemonicToSeed(form.inputText(R.id.inputSeed))) }
+        .map { form.inputText(R.id.inputSeed) }
+
+    val createOrWithdraw = Observable.merge(createPrivate, createSeed)
+        .flatMapMaybe { input ->
+          xdaiProvider.isEmptyAccount().map {
+            if (it) SettingsScreenDirections.actionSettingsScreenToInitScreen(input).event()
+            else SettingsScreenDirections.actionSettingsScreenToWithdrawScreen(input).event()
+          }.errorHandlingCall(event)
+        }
+        .doOnNext { event.onNext(it) }
 
     val beer = intents.beer()
         .doOnNext {
@@ -102,6 +108,9 @@ class SettingsModel @Inject constructor(
     val pair = intents.pair()
         .doOnNext { event.onNext(SettingsScreenDirections.actionSettingsScreenToPairScreen().event()) }
 
+    val balance = xdaiProvider.isEmptyAccount(event)
+        .doOnNext { state.onNext(SettingsState(it)) }
+
     return CompositeDisposable().with(
         form.subscribe(intents),
         intents.focusChanges().subscribe(),
@@ -110,9 +119,9 @@ class SettingsModel @Inject constructor(
         burn.subscribe(),
         qr.subscribe(),
         copy.subscribe(),
-        createPrivate.subscribe(),
-        createSeed.subscribe(),
+        createOrWithdraw.subscribe(),
         beer.subscribe(),
+        balance.subscribe(),
         intents.navigation().subscribe { event.onNext(PopStack) }
     )
   }

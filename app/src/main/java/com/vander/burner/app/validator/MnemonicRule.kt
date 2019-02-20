@@ -7,7 +7,7 @@ import pm.gnosis.mnemonic.Bip39
 import pm.gnosis.model.Solidity
 import pm.gnosis.utils.asEthereumAddress
 
-class SeedRule(private val bip39: Bip39) : ValidateRule() {
+class MnemonicRule(private val bip39: Bip39) : ValidateRule() {
   override val errorRes: Int
     get() = R.string.error_form_seed
 

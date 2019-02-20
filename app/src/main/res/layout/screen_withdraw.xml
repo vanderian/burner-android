@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <include layout="@layout/layout_appbar" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/side_margin"
+            android:layout_marginEnd="@dimen/side_margin"
+            android:animateLayoutChanges="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            >
+
+            <com.vander.burner.app.ui.misc.BlockiesImageView
+                android:id="@+id/imageBlockie"
+                android:layout_width="@dimen/blockie_size"
+                android:layout_height="@dimen/blockie_size"
+                android:layout_marginTop="24dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:background="@color/white"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_address"
+                android:textAppearance="?attr/textAppearanceOverline"
+                app:layout_constraintBottom_toTopOf="@+id/textAddressShort"
+                app:layout_constraintLeft_toLeftOf="@+id/textAddressShort"
+                />
+
+            <TextView
+                android:id="@+id/textAddressShort"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                app:layout_constraintBottom_toBottomOf="@+id/imageBlockie"
+                app:layout_constraintLeft_toRightOf="@+id/imageBlockie"
+                app:layout_constraintTop_toTopOf="@+id/imageBlockie"
+                tools:text="asdfgh"
+                />
+
+            <TextView
+                android:id="@+id/textBalance"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="48dp"
+                android:gravity="center"
+                android:lines="1"
+                android:textAppearance="?attr/textAppearanceHeadline1"
+                android:textColor="?attr/colorOnSurface"
+                app:autoSizeMaxTextSize="48sp"
+                app:autoSizeMinTextSize="12sp"
+                app:autoSizeStepGranularity="2sp"
+                app:autoSizeTextType="uniform"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageBlockie"
+                tools:text="10000000, $"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_amount_withdraw"
+                android:textAppearance="?attr/textAppearanceOverline"
+                app:layout_constraintBottom_toTopOf="@+id/inputAmount"
+                app:layout_constraintStart_toStartOf="@+id/inputAmount"
+                />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/inputAmount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="64dp"
+                android:hint="@string/hint_amount"
+                app:layout_constraintTop_toBottomOf="@+id/textBalance"
+                app:layout_constraintBottom_toTopOf="@+id/buttonWithdraw"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionDone"
+                    android:inputType="numberDecimal"
+                    android:lines="1"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonWithdraw"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/action_withdraw"
+                app:layout_constraintTop_toBottomOf="@+id/inputAmount"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <include layout="@layout/layout_loading" />
+
+</FrameLayout>

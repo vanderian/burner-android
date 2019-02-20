@@ -4,12 +4,13 @@ import com.vander.burner.R
 import com.vander.burner.app.data.AccountRepository
 import com.vander.burner.app.net.XdaiProvider
 import com.vander.burner.app.net.safeApiCall
+import com.vander.burner.app.ui.ShowReceiptEvent
 import com.vander.burner.app.validator.AddressEnsRule
 import com.vander.burner.app.validator.GreaterThenZeroRule
+import com.vander.burner.app.validator.MaxBalanceRule
 import com.vander.burner.app.validator.NotEmptyRule
 import com.vander.scaffold.event
 import com.vander.scaffold.form.Form
-import com.vander.scaffold.form.validator.ValidateRule
 import com.vander.scaffold.form.validator.Validation
 import com.vander.scaffold.screen.PopStack
 import com.vander.scaffold.screen.PopStackTo
@@ -21,7 +22,6 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import pm.gnosis.models.Wei
 import javax.inject.Inject
 
 class SendModel @Inject constructor(
@@ -34,13 +34,6 @@ class SendModel @Inject constructor(
       Validation(R.id.inputAmount, NotEmptyRule, GreaterThenZeroRule)
   )
 
-  private fun maxBalanceRule(balance: Wei) = object : ValidateRule() {
-    override fun validate(text: String): Boolean = Wei.ether(text) <= balance
-
-    override val errorRes: Int
-      get() = R.string.error_form_max_balance
-  }
-
   override fun collectIntents(intents: SendIntents, result: Observable<Result>): Disposable {
     val data = SendScreenArgs.fromBundle(args).transferData
     val fromScan = data != null
@@ -50,8 +43,8 @@ class SendModel @Inject constructor(
     }
 
     val submit = intents.send()
-        .flatMapMaybe { xdaiProvider.balance.safeApiCall(event) }
-        .filter { form.validate(Validation(R.id.inputAmount, maxBalanceRule(it))) }
+        .flatMapMaybe { xdaiProvider.balance().safeApiCall(event) }
+        .filter { form.validate(Validation(R.id.inputAmount, MaxBalanceRule(it))) }
         .map {
           xdaiProvider.createTrx(
               form.inputText(R.id.inputAddress),
@@ -62,7 +55,7 @@ class SendModel @Inject constructor(
         .flatMapMaybe { xdaiProvider.transfer(it).safeApiCall(event) }
         .observeOn(AndroidSchedulers.mainThread())
         .flatMapMaybe { (t, r) ->
-          intents.receipt(r, t.value!!.toEther(), fromScan)
+          intents.receipt(ShowReceiptEvent(r, t.value!!.toEther(), fromScan))
               .doOnSuccess { event.onNext(PopStackTo(R.id.balanceScreen, false)) }
               .doOnComplete { event.onNext(PopStack) }
         }
