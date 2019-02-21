@@ -57,7 +57,7 @@ class WithdrawModel @Inject constructor(
     val withdraw = intents.withdraw()
         .filter { keys.isNotBlank() }
         .filter { form.validate(Validation(R.id.inputAmount, MaxBalanceRule(stateValue.balance))) }
-        .map { Transaction(accountRepository.address, Wei.ether(form.inputText(R.id.inputAmount)), data = "0x") }
+        .map { Transaction(accountRepository.address, Wei.ether(form.inputText(R.id.inputAmount))) }
         .flatMapMaybe { xdaiProvider.transfer(it, keyPair.blockingGet(), address.blockingGet()).safeApiCall(event) }
         .observeOn(AndroidSchedulers.mainThread())
         .flatMapMaybe { (t, r) ->

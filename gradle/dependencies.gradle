@@ -6,7 +6,12 @@ ext {
             androidx_room: '2.1.0-alpha03',
             bivrost      : 'v0.7.1',
             svalinn      : 'v0.7.0',
+            kethereum    : '0.33',
+            okhttp       : '3.11.0',
+            retrofit     : '2.4.0',
+            dagger       : '2.19',
 
+            stetho       : '1.5.0',
             espresso     : '3.1.1',
             junit        : '4.12',
             mockito      : '2.18.3',

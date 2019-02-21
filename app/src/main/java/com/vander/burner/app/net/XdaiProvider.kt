@@ -3,13 +3,11 @@ package com.vander.burner.app.net
 import com.f2prateek.rx.preferences2.Preference
 import com.vander.burner.app.data.AccountRepository
 import com.vander.burner.app.di.Xdai
+import com.vander.burner.app.eth.hash
+import com.vander.burner.app.eth.rlp
 import com.vander.scaffold.annotations.ApplicationScope
 import com.vander.scaffold.screen.Event
 import io.reactivex.*
-import org.web3j.crypto.Credentials
-import org.web3j.crypto.ECKeyPair
-import org.web3j.crypto.RawTransaction
-import org.web3j.crypto.TransactionEncoder
 import pm.gnosis.crypto.KeyPair
 import pm.gnosis.ethereum.*
 import pm.gnosis.ethereum.models.TransactionParameters
@@ -17,7 +15,10 @@ import pm.gnosis.ethereum.models.TransactionReceipt
 import pm.gnosis.model.Solidity
 import pm.gnosis.models.Transaction
 import pm.gnosis.models.Wei
-import pm.gnosis.utils.*
+import pm.gnosis.utils.addHexPrefix
+import pm.gnosis.utils.asEthereumAddress
+import pm.gnosis.utils.toHex
+import pm.gnosis.utils.toHexString
 import timber.log.Timber
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -59,8 +60,7 @@ class XdaiProvider @Inject constructor(
       xdai.getBalance(address).singleOrError()
 
   fun balance(eventObserver: Observer<Event>, address: Solidity.Address = accountRepository.address): Observable<Wei> =
-      Observable.interval(BLOCK_TIME, TimeUnit.SECONDS)
-          .startWith(0)
+      Observable.interval(BLOCK_TIME, TimeUnit.SECONDS).startWith(0)
           .flatMapMaybe { balance(address).errorHandlingCall(eventObserver) }
 
   fun isEmptyAccount(address: Solidity.Address = accountRepository.address): Single<Boolean> =
@@ -71,10 +71,8 @@ class XdaiProvider @Inject constructor(
           .startWith(0)
           .flatMapMaybe { isEmptyAccount(address).errorHandlingCall(eventObserver) }
 
-  fun createTrx(to: String, amount: String, msg: String?): Transaction {
-    val message = msg.let { if (it.isNullOrBlank()) "0x" else it.toByteArray().toHex().addHexPrefix() }
-    return Transaction(to.asEthereumAddress()!!, Wei.ether(amount), data = message)
-  }
+  fun createTrx(to: String, amount: String, msg: String?): Transaction =
+    Transaction(to.asEthereumAddress()!!, Wei.ether(amount), data = msg?.toByteArray()?.toHexString()?.addHexPrefix())
 
   fun prepare(trx: Transaction, address: Solidity.Address = accountRepository.address): Single<Transaction> =
       xdai.getTransactionParameters(address, trx.address, trx.value, trx.data)
@@ -88,11 +86,10 @@ class XdaiProvider @Inject constructor(
           .singleOrError()
 
   fun sign(trx: Transaction, keyPair: KeyPair = accountRepository.keyPair) =
-      RawTransaction.createTransaction(trx.nonce, trx.gasPrice, trx.gas, trx.address.asEthereumAddressString(), trx.value?.value, trx.data)
-          .let { trx to TransactionEncoder.signMessage(it, Credentials.create(ECKeyPair.create(keyPair.privKey))) }
+      trx.rlp(keyPair.sign(trx.hash())).toHexString().addHexPrefix().let { trx to it }
 
-  fun send(signed: Pair<Transaction, ByteArray>): Single<Pair<Transaction, String>> =
-      xdai.sendRawTransaction(signed.second.toHexString().addHexPrefix())
+  fun send(signed: Pair<Transaction, String>): Single<Pair<Transaction, String>> =
+      xdai.sendRawTransaction(signed.second)
           .map { signed.first to it }
           .singleOrError()
 
