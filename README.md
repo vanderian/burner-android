@@ -1,5 +1,7 @@
 # Burner Wallet android app
 
+#### preview version for livenet @ https://betas.to/UzqbEryQ
+
 
 ### setup
 
@@ -10,4 +12,3 @@
 debug drawer provides endpoints for:
 - `http://localhost:8545`
 - `https://dai.poa.network`
-
